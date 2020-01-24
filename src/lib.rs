@@ -39,11 +39,16 @@ pub struct Versions {
 ///
 /// # Example
 ///
-/// ```ignore
-/// # async fn run() {
-/// if let Ok(_newer) = get_latest_version("my-awesome-crate-bin", "1.0.0") {
-///     println!("There's a new version!");
-/// }
+/// ```rust,no_run
+/// use check_latest::get_versions;
+/// use semver::Version;
+///
+/// let current_version = Version::parse("1.0.0").unwrap();
+///
+/// if let Ok(versions) = get_versions("my-awesome-crate-bin", "my-awesome-crate-bin/1.0.0") {
+///     if versions.max_version > current_version {
+///         println!("Go get the new version!");
+///     }
 /// }
 /// ```
 pub fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions, String> {
