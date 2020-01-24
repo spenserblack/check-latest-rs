@@ -1,8 +1,4 @@
 use semver::Version;
-// const VERSION: &str = env!("CARGO_PKG_VERSION");
-// const CRATE_NAME: &str = env!("CARGO_PKG_NAME");
-
-// TODO Make macro
 
 #[derive(Debug)]
 pub struct Versions {
@@ -12,7 +8,7 @@ pub struct Versions {
     pub newest_version: Version,
 }
 
-/// *__NOTE__ You probably want to use `max_version!`*
+/// *__NOTE__ You probably want to use `versions!`*
 ///
 /// `crate_name`: The crate that the version should be checked for.
 ///
@@ -86,4 +82,113 @@ pub fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions, Stri
         newest_version,
     };
     Ok(versions)
+}
+
+#[doc(hidden)]
+#[macro_export]
+macro_rules! crate_name {
+    () => (env!("CARGO_PKG_NAME"));
+}
+
+#[doc(hidden)]
+#[macro_export]
+macro_rules! user_agent {
+    () => (concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION")));
+}
+
+/// Makes it easier to run `get_versions`.
+///
+/// `versions!()` will predict the `crate_name` and `user_agent`. `crate_name`
+/// will default to package name in your `Cargo.toml` file.
+/// `user_agent` will default to the name of your crate as defined in
+/// `Cargo.toml` followed by a `/` and the version of your package as defined
+/// in your `Cargo.toml` file (e.g. `my-crate-name/1.0.0`).
+///
+/// If you do not want these defaults to be used, you can set your own values.
+/// See the examples below.
+///
+/// # Examples
+///
+/// ## Use Defaults
+///
+/// ```rust,no_run
+/// use check_latest::versions;
+/// use semver::Version;
+///
+/// let current_version = Version::parse("1.0.0").unwrap();
+///
+/// if let Ok(versions) = versions!() {
+///     if versions.max_version > current_version {
+///         println!("Go get a new version!");
+///     }
+/// }
+/// ```
+///
+/// ## Set Crate Name
+///
+/// ```rust,no_run
+/// use check_latest::versions;
+/// use semver::Version;
+///
+/// let current_version = Version::parse("1.0.0").unwrap();
+///
+/// if let Ok(versions) = versions!(crate_name = "my-renamed-crate") {
+///     if versions.max_version > current_version {
+///         println!("Go get a new version!");
+///     }
+/// }
+/// ```
+///
+/// ## Set User Agent
+///
+/// ```rust,no_run
+/// use check_latest::versions;
+/// use semver::Version;
+///
+/// let current_version = Version::parse("1.0.0").unwrap();
+///
+/// if let Ok(versions) = versions!(user_agent = "my extra detailed user agent") {
+///     if versions.max_version > current_version {
+///         println!("Go get a new version!");
+///     }
+/// }
+/// ```
+///
+/// ## Set Both
+///
+/// ```rust,no_run
+/// use check_latest::versions;
+/// use semver::Version;
+///
+/// let current_version = Version::parse("1.0.0").unwrap();
+///
+/// let crate_name = "my-renamed-crate";
+/// let user_agent = "my extra detailed user agent";
+///
+/// // This is reversible BTW
+/// let versions = versions!(crate_name = crate_name, user_agent = user_agent);
+///
+/// if let Ok(versions) = versions {
+///     if versions.max_version > current_version {
+///         println!("Go get a new version!");
+///     }
+/// }
+/// ```
+#[macro_export]
+macro_rules! versions {
+    () => {
+        $crate::versions!(crate_name = $crate::crate_name!(), user_agent = $crate::user_agent!())
+    };
+    (crate_name = $crate_name:expr, user_agent = $user_agent:expr) => {
+        $crate::get_versions($crate_name, $user_agent)
+    };
+    (user_agent = $user_agent:expr, crate_name = $crate_name:expr) => {
+        $crate::versions!($crate_name, $user_agent)
+    };
+    (crate_name = $crate_name:expr) => {
+        $crate::versions!(crate_name = $crate_name, user_agent = $crate::user_agent!())
+    };
+    (user_agent = $user_agent:expr) => {
+        $crate::versions!(crate_name = $crate::crate_name!(), user_agent = $user_agent)
+    };
 }
