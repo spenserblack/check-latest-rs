@@ -16,8 +16,26 @@ pub struct Versions {
 ///
 /// `crate_name`: The crate that the version should be checked for.
 ///
-/// `user_agent`: crates.io requires a good user-agent. An example user-agent is
-/// `"my-awesome-crate-bin/1.0.0"`, although crates.io prefers contact info.
+/// `user_agent`: without a proper User-Agent, the request to the Crates.io API
+/// will result in the following response, which we won't be able to parse into
+/// crate versions.
+///
+/// ```text
+/// We require that all requests include a `User-Agent` header.  To allow us to determine the impact your bot has on our service, we ask that your user agent actually identify your bot, and not just report the HTTP client library you're using.  Including contact information will also reduce the chance that we will need to take action against your bot.
+///
+/// Bad:
+///   User-Agent: <badge user agent that you used>
+///
+/// Better:
+///   User-Agent: my_crawler
+///
+/// Best:
+///   User-Agent: my_crawler (my_crawler.com/info)
+///   User-Agent: my_crawler (help@my_crawler.com)
+///
+/// If you believe you've received this message in error, please email help@crates.io and include the request id {}.
+/// ```
+///
 ///
 /// # Example
 ///
