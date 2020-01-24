@@ -16,7 +16,7 @@ pub struct Versions {
 ///
 /// `crate_name`: The crate that the version should be checked for.
 ///
-/// `user_agent`: without a proper User-Agent, the request to the Crates.io API
+/// `user_agent`: without a proper User-Agent, the request to the [Crates.io] API
 /// will result in the following response, which we won't be able to parse into
 /// crate versions.
 ///
@@ -51,6 +51,8 @@ pub struct Versions {
 ///     }
 /// }
 /// ```
+///
+/// [Crates.io]: https://crates.io/
 pub fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions, String> {
     let url = format!("https://crates.io/api/v1/crates/{crate_name}", crate_name = crate_name);
     let response: serde_json::Value = reqwest::blocking::Client::builder()
