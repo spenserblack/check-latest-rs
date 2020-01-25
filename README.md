@@ -3,6 +3,14 @@
 
 Check if your rust executable is the latest available version on [Crates.io]
 
+# The Basics
+
+```rust
+if let Ok(Some(version)) = max_version!() {
+    println!("We've released a new version: {}!", version);
+}
+```
+
 # Notes
 
 Using this library in your

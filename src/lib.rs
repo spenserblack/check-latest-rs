@@ -1,3 +1,10 @@
+//! ```rust,no_run
+//! use check_latest::*;
+//!
+//! if let Ok(Some(version)) = max_version!() {
+//!     println!("We've released a new version: {}!", version);
+//! }
+//! ```
 use semver::Version;
 pub use max::*;
 pub use newest::*;
