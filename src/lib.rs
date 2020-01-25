@@ -87,6 +87,7 @@ pub fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions, Erro
 }
 
 /// *__NOTE__ You probably want to use `max_version!`*
+///
 /// Compares the current crate version to the maximum version available on
 /// [Crates.io].
 ///
@@ -235,7 +236,6 @@ macro_rules! versions {
         $crate::versions!(crate_name = $crate::crate_name!(), user_agent = $user_agent)
     };
 }
-///
 /// Makes it easier to run `get_max_version`.
 ///
 /// `max_version!()` will predict the `crate_name`, `current_crate_version`, and
@@ -267,7 +267,7 @@ macro_rules! versions {
 /// ```rust,no_run
 /// use check_latest::max_version;
 ///
-///     let name = "my-renamed-crate";
+/// let name = "my-renamed-crate";
 ///
 /// if let Ok(Some(version)) = max_version!(crate_name = name) {
 ///     println!("Go get version {}!", version);
