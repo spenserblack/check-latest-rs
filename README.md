@@ -1,4 +1,7 @@
 # check-latest
+[![Crates.io](https://img.shields.io/crates/v/check-latest)](https://crates.io/crates/check-latest/)
+[![Docs.rs](https://docs.rs/check-latest/badge.svg)](https://docs.rs/check-latest/)
+![Crates.io](https://img.shields.io/crates/d/check-latest)
 [![Build Status](https://travis-ci.com/spenserblack/check-latest-rs.svg?branch=master)](https://travis-ci.com/spenserblack/check-latest-rs)
 
 Check if your rust executable is the latest available version on [Crates.io]
