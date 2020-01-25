@@ -36,6 +36,53 @@ pub fn get_max_version(crate_name: &str, current_crate_version: &str, user_agent
     Ok(max_version)
 }
 
+/// Gets the largest minor version available with the same major version.
+///
+/// *__NOTE__ You probably want to use `max_minor_version!`*
+///
+/// - `crate_name`: The crate that the version should be checked for.
+/// - `version`: The version to be compared against.
+/// - `user_agent`: without a proper User-Agent, the request to the [Crates.io]
+/// API will result in the following response, which we won't be able to parse
+/// into crate versions.
+///
+/// # Returns
+///
+/// If `version` is `x.y.z` and the max available minor version is `x.b.c`.
+///
+/// - `Ok(Some(version))` if `y.z` < `b.c`
+/// - `Ok(None) if `y.z` >= `b.c`
+/// - `Err(_)` if there was a failure to get and compare the versions
+///
+/// # Example
+///
+/// ```rust,no_run
+/// use check_latest::get_max_minor_version;
+///
+/// let crate_name = "my-awesome-crate-bin";
+/// let version = "1.0.0";
+/// let user_agent = format!("{}/{}", crate_name, version);
+///
+/// let result = get_max_minor_version(crate_name, version, &user_agent);
+///
+/// if let Ok(Some(higher_minor_version)) = result {
+///     println!("A new minor version is available: {}", higher_minor_version);
+/// }
+/// ```
+///
+/// [Crates.io]: https://crates.io/
+pub fn get_max_minor_version(crate_name: &str, version: &str, user_agent: &str) -> Result<Option<Version>, Error> {
+    let versions = get_version_list(crate_name, user_agent)?;
+    let current_version = Version::parse(version).map_err(|_| "Couldn't parse `version`")?;
+
+    let max_minor_version = versions
+        .into_iter()
+        .filter(|v| v.major == current_version.major)
+        .max();
+
+    Ok(max_minor_version)
+}
+
 /// Makes it easier to run `get_max_version`.
 ///
 /// `max_version!()` will predict the `crate_name`, `current_crate_version`, and
@@ -175,5 +222,147 @@ macro_rules! max_version {
 
     () => {
         $crate::get_max_version($crate::crate_name!(), $crate::crate_version!(), $crate::user_agent!())
+    };
+}
+
+/// Makes it easier to run `get_max_minor_version`.
+///
+/// `max_minor_version!()` will predict the `crate_name`,
+/// `current_crate_version`, and `user_agent`.
+/// `crate_name` will default to package name in your `Cargo.toml` file.
+/// `current_crate_version` will default to the package version in your
+/// `Cargo.toml` file.
+/// `user_agent` will default to the name of your crate as defined in
+/// `Cargo.toml` followed by a `/` and the version of your package as defined
+/// in your `Cargo.toml` file (e.g. `my-crate-name/1.0.0`).
+///
+/// If you do not want these defaults to be used, you can set your own values.
+/// See the examples below.
+///
+/// # Examples
+///
+/// ## Use Defaults
+///
+/// ```rust,no_run
+/// use check_latest::max_minor_version;
+///
+/// if let Ok(Some(version)) = max_minor_version!() {
+///     println!("Minor version has been updated to {}!", version);
+/// }
+/// ```
+///
+/// ## Set Crate Name
+///
+/// ```rust,no_run
+/// use check_latest::max_minor_version;
+///
+/// let name = "my-renamed-crate";
+///
+/// if let Ok(Some(version)) = max_minor_version!(crate_name = name) {
+///     println!("Minor version has been updated to {}!", version);
+/// }
+/// ```
+///
+/// ## Set Crate Version to Compare
+///
+/// ```rust,no_run
+/// use check_latest::max_version;
+///
+/// let current_version = "1.2.3";
+///
+///
+/// if let Ok(Some(version)) = max_version!(version = current_version) {
+///     println!("Minor version has been updated to {}!", version);
+/// }
+/// ```
+///
+/// ## Set User Agent
+///
+/// ```rust,no_run
+/// use check_latest::max_version;
+///
+/// let user_agent = "My extra detailed user agent";
+///
+/// if let Ok(Some(version)) = max_version!(user_agent = user_agent) {
+///     println!("Minor version has been updated to {}!", version);
+/// }
+/// ```
+///
+/// ## Set All 3
+///
+/// ```rust,no_run
+/// use check_latest::max_version;
+///
+/// let crate_name = "my-renamed-crate";
+/// let current_version = "1.2.3";
+/// let user_agent = "My extra detailed user agent";
+///
+/// let max_version = max_version!(
+///     // These can be shuffled BTW
+///     crate_name = crate_name,
+///     version = current_version,
+///     user_agent = user_agent,
+/// );
+///
+/// if let Ok(Some(version)) = max_version {
+///     println!("Minor version has been updated to {}!", version);
+/// }
+/// ```
+#[macro_export]
+macro_rules! max_minor_version {
+    () => {
+        $crate::max_minor_version!(crate_name = $crate::crate_name!(), version = $crate::crate_version!(), user_agent = $crate::user_agent!())
+    };
+    // All 3 specified {{{
+    (crate_name = $crate_name:expr, version = $version:expr, user_agent = $user_agent:expr $(,)?) => {
+        $crate::get_max_minor_version($crate_name, $version, $user_agent)
+    };
+    (crate_name = $crate_name:expr, user_agent = $user_agent:expr, version = $version:expr $(,)?) => {
+        $crate::get_max_minor_version($crate_name, $version, $user_agent)
+    };
+    (version = $version:expr, crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
+        $crate::get_max_minor_version($crate_name, $version, $user_agent)
+    };
+    (version = $version:expr, user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
+        $crate::get_max_minor_version($crate_name, $version, $user_agent)
+    };
+    (user_agent = $user_agent:expr, crate_name = $crate_name:expr, version = $version:expr $(,)?) => {
+        $crate::get_max_minor_version($crate_name, $version, $user_agent)
+    };
+    (user_agent = $user_agent:expr, version = $version:expr, crate_name = $crate_name:expr $(,)?) => {
+        $crate::get_max_minor_version($crate_name, $version, $user_agent)
+    };
+
+    (version = $version:expr, user_agent = $user_agent:expr $(,)?) => {
+        $crate::get_max_minor_version($crate::crate_name!(), $version, $user_agent)
+    };
+    (user_agent = $user_agent:expr, version = $version:expr $(,)?) => {
+        $crate::get_max_minor_version($crate::crate_name!(), $version, $user_agent)
+    };
+    (crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
+        $crate::get_max_minor_version($crate_name, $crate::crate_version!(), $user_agent)
+    };
+    (user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
+        $crate::get_max_minor_version($crate_name, $crate::crate_version!(), $user_agent)
+    };
+    (crate_name = $crate_name:expr, version = $version:expr $(,)?) => {
+        $crate::get_max_minor_version($crate_name, $version, $crate::user_agent!())
+    };
+    (version = $version:expr, crate_name = $crate_name:expr $(,)?) => {
+        $crate::get_max_minor_version($crate_name, $version, $crate::user_agent!())
+    };
+
+    (crate_name = $crate_name:expr $(,)?) => {
+        $crate::get_max_minor_version($crate_name, $crate::crate_version!(), $crate::user_agent!())
+    };
+    (version = $version:expr $(,)?) => {
+        $crate::get_max_minor_version($crate::crate_name!(), $version, $crate::user_agent!())
+    };
+    (user_agent = $user_agent:expr $(,)?) => {
+        $crate::get_max_minor_version($crate::crate_name!(), $crate::crate_version!(), $user_agent)
+    };
+
+    () => {
+        $crate::get_max_minor_version($crate::crate_name!(), $crate::crate_version!(), $crate::user_agent!())
     };
 }
