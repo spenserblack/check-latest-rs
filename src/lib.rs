@@ -105,6 +105,7 @@ fn get_version_list(crate_name: &str, user_agent: &str) -> Result<Vec<Version>, 
         .as_array()
         .ok_or("Couldn't parse version list as array")?;
     let versions = versions.into_iter()
+        .filter_map(|v| v.get("num"))
         .filter_map(|v| v.as_str())
         .map(|v| Version::parse(v))
         .filter_map(|v| v.ok())
