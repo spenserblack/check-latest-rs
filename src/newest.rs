@@ -2,7 +2,7 @@ use super::*;
 
 /// *__NOTE__ You probably want to use `newest_version!`*
 ///
-/// Compares the current crate version to the newestimum version available on
+/// Compares the current crate version to the newest version available on
 /// [Crates.io].
 ///
 /// # Returns
