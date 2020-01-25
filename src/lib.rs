@@ -8,6 +8,8 @@ pub struct Versions {
     pub newest_version: Version,
 }
 
+pub type Error = String;
+
 /// *__NOTE__ You probably want to use `versions!`*
 ///
 /// `crate_name`: The crate that the version should be checked for.
@@ -49,7 +51,7 @@ pub struct Versions {
 /// ```
 ///
 /// [Crates.io]: https://crates.io/
-pub fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions, String> {
+pub fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions, Error> {
     let url = format!("https://crates.io/api/v1/crates/{crate_name}", crate_name = crate_name);
     let response: serde_json::Value = reqwest::blocking::Client::builder()
         .user_agent(format!("{}/{}", crate_name, user_agent))
