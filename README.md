@@ -9,6 +9,8 @@ Check if your rust executable is the latest available version on [Crates.io]
 # The Basics
 
 ```rust
+use check_latest::max_version;
+
 if let Ok(Some(version)) = max_version!() {
     println!("We've released a new version: {}!", version);
 }
