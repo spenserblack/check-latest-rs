@@ -86,6 +86,40 @@ pub fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions, Erro
     Ok(versions)
 }
 
+/// Compares the current crate version to the maximum version available on
+/// [Crates.io].
+///
+/// # Returns
+/// - `Ok(Some(version))` if the current version < max version
+/// - `Ok(None) if current version >= max version
+/// - `Err(_)` if there was a failure to get and compare the versions
+///
+/// # Example
+///
+/// ```rust,no_run
+/// use check_latest::get_max_version;
+///
+/// let name = "my-awesome-crate-bin";
+/// let version = "1.0.0";
+/// let user_agent = format!("{}/{}", name, version);
+///
+/// if let Ok(Some(version)) = get_max_version(name, version, &user_agent) {
+///     println!("Go get version {}!", version);
+/// }
+/// ```
+///
+/// [Crates.io]: https://crates.io/
+pub fn get_max_version(crate_name: &str, current_crate_version: &str, user_agent: &str) -> Result<Option<Version>, Error> {
+    let current_version = Version::parse(current_crate_version).map_err(|_| "Couldn't parse current version")?;
+    let max_version = get_versions(crate_name, user_agent)?.max_version;
+    let max_version = if current_version < max_version {
+        Some(max_version)
+    } else {
+        None
+    };
+    Ok(max_version)
+}
+
 #[doc(hidden)]
 #[macro_export]
 macro_rules! crate_name {
