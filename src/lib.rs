@@ -112,6 +112,53 @@ fn get_version_list(crate_name: &str, user_agent: &str) -> Result<Vec<Version>, 
     Ok(versions)
 }
 
+/// Gets the largest minor version available with the same major version.
+///
+/// *__NOTE__ You probably want to use `max_minor_version!`*
+///
+/// - `crate_name`: The crate that the version should be checked for.
+/// - `version`: The version to be compared against.
+/// - `user_agent`: without a proper User-Agent, the request to the [Crates.io]
+/// API will result in the following response, which we won't be able to parse
+/// into crate versions.
+///
+/// # Returns
+///
+/// If `version` is `x.y.z` and the max available minor version is `x.b.c`.
+///
+/// - `Ok(Some(version))` if `y.z` < `b.c`
+/// - `Ok(None) if `y.z` >= `b.c`
+/// - `Err(_)` if there was a failure to get and compare the versions
+///
+/// # Example
+///
+/// ```rust,no_run
+/// use check_latest::get_max_minor_version;
+///
+/// let crate_name = "my-awesome-crate-bin";
+/// let version = "1.0.0";
+/// let user_agent = format!("{}/{}", crate_name, version);
+///
+/// let result = get_max_minor_version(crate_name, version, &user_agent);
+///
+/// if let Ok(Some(higher_minor_version)) = result {
+///     println!("A new minor version is available: {}", higher_minor_version);
+/// }
+/// ```
+///
+/// [Crates.io]: https://crates.io/
+pub fn get_max_minor_version(crate_name: &str, version: &str, user_agent: &str) -> Result<Option<Version>, Error> {
+    let versions = get_version_list(crate_name, user_agent)?;
+    let current_version = Version::parse(version).map_err(|_| "Couldn't parse `version`")?;
+
+    let max_minor_version = versions
+        .into_iter()
+        .filter(|v| v.major == current_version.major)
+        .max();
+
+    Ok(max_minor_version)
+}
+
 #[doc(hidden)]
 #[macro_export]
 macro_rules! crate_name {
