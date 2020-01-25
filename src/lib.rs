@@ -221,16 +221,16 @@ macro_rules! versions {
     () => {
         $crate::versions!(crate_name = $crate::crate_name!(), user_agent = $crate::user_agent!())
     };
-    (crate_name = $crate_name:expr, user_agent = $user_agent:expr) => {
+    (crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
         $crate::get_versions($crate_name, $user_agent)
     };
-    (user_agent = $user_agent:expr, crate_name = $crate_name:expr) => {
+    (user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
         $crate::versions!($crate_name, $user_agent)
     };
-    (crate_name = $crate_name:expr) => {
+    (crate_name = $crate_name:expr $(,)?) => {
         $crate::versions!(crate_name = $crate_name, user_agent = $crate::user_agent!())
     };
-    (user_agent = $user_agent:expr) => {
+    (user_agent = $user_agent:expr $(,)?) => {
         $crate::versions!(crate_name = $crate::crate_name!(), user_agent = $user_agent)
     };
 }
