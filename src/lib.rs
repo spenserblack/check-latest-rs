@@ -225,7 +225,7 @@ macro_rules! versions {
         $crate::get_versions($crate_name, $user_agent)
     };
     (user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::versions!($crate_name, $user_agent)
+        $crate::get_versions($crate_name, $user_agent)
     };
     (crate_name = $crate_name:expr $(,)?) => {
         $crate::versions!(crate_name = $crate_name, user_agent = $crate::user_agent!())
