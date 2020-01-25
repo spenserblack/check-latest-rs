@@ -9,6 +9,7 @@ readme = "README.md"
 keywords = ["version", "latest"]
 categories = []
 repository = "https://github.com/spenserblack/check-latest-rs"
+exclude = [".github/*", ".gitignore", ".editorconfig", ".travis.yml"]
 publish = false # You should at least look at this file before you publish
 
 [dependencies]
