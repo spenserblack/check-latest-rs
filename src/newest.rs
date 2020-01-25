@@ -5,6 +5,10 @@ use super::*;
 /// Compares the current crate version to the newest version available on
 /// [Crates.io].
 ///
+/// Please note that the newest version is *not* always the maximum version.
+/// A patch may have been released for an old major version that is still being
+/// maintained, for example.
+///
 /// # Returns
 /// - `Ok(Some(version))` if the current version < newest version
 /// - `Ok(None) if current version >= newest version
@@ -37,6 +41,10 @@ pub fn get_newest_version(crate_name: &str, current_crate_version: &str, user_ag
 }
 
 /// Makes it easier to run `get_newest_version`.
+///
+/// Please note that the newest version is *not* always the maximum version.
+/// A patch may have been released for an old major version that is still being
+/// maintained, for example.
 ///
 /// `newest_version!()` will predict the `crate_name`, `current_crate_version`, and
 /// `user_agent`.
