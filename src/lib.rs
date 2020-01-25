@@ -88,6 +88,30 @@ pub fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions, Erro
     Ok(versions)
 }
 
+fn get_version_list(crate_name: &str, user_agent: &str) -> Result<Vec<Version>, Error> {
+    let url = format!("https://crates.io/api/v1/crates/{crate_name}", crate_name = crate_name);
+    let response: serde_json::Value = reqwest::blocking::Client::builder()
+        .user_agent(format!("{}/{}", crate_name, user_agent))
+        .build()
+        .map_err(|_| "Couldn't build client")?
+        .get(&url)
+        .send()
+        .map_err(|_| "Couldn't request crate info")?
+        .json()
+        .map_err(|_| "Couldn't parse response to JSON")?;
+    let versions = response
+        .get("versions")
+        .ok_or("Version list not found")?
+        .as_array()
+        .ok_or("Couldn't parse version list as array")?;
+    let versions = versions.into_iter()
+        .filter_map(|v| v.as_str())
+        .map(|v| Version::parse(v))
+        .filter_map(|v| v.ok())
+        .collect();
+    Ok(versions)
+}
+
 #[doc(hidden)]
 #[macro_export]
 macro_rules! crate_name {
