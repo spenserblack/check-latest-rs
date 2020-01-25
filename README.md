@@ -20,7 +20,7 @@ Using this library in your
 
 | Rust Library | Rust Binary |
 | :----------: | :---------: |
-| :nauseated_face: | :+1: |
+|      🤢      |     👍      |
 
 If you use this library for your binary, you should probably make this an optional feature.
 Simply checking for the latest version on [Crates.io] brings over *a lot* of dependencies
