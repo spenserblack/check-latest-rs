@@ -6,7 +6,7 @@ pub use newest::*;
 pub struct Versions {
     /// The maximum version.
     pub max_version: Version,
-    /// The newest version. Not necessarily that maximum version.
+    /// The newest version. Not necessarily the maximum version.
     pub newest_version: Version,
 }
 
