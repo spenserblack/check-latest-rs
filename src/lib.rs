@@ -94,8 +94,14 @@ macro_rules! crate_name {
 
 #[doc(hidden)]
 #[macro_export]
+macro_rules! crate_version {
+    () => (env!("CARGO_PKG_VERSION"));
+}
+
+#[doc(hidden)]
+#[macro_export]
 macro_rules! user_agent {
-    () => (concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION")));
+    () => (concat!($crate::crate_name!(), "/", $crate::crate_version!()));
 }
 
 /// Makes it easier to run `get_versions`.
