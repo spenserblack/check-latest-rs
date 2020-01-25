@@ -1,5 +1,6 @@
 use semver::Version;
 pub use max::*;
+pub use newest::*;
 
 #[derive(Debug)]
 pub struct Versions {
@@ -203,3 +204,4 @@ macro_rules! versions {
 }
 
 mod max;
+mod newest;
