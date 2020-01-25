@@ -1,6 +1,6 @@
 [package]
 name = "check-latest"
-version = "0.0.1"
+version = "0.1.0"
 authors = ["Spenser Black <spenserblack01@gmail.com>"]
 edition = "2018"
 license = "MIT OR Apache-2.0"
@@ -10,7 +10,6 @@ keywords = ["version", "latest"]
 categories = []
 repository = "https://github.com/spenserblack/check-latest-rs"
 exclude = [".github/*", ".gitignore", ".editorconfig", ".travis.yml"]
-publish = false # You should at least look at this file before you publish
 
 [dependencies]
 reqwest = { version = "0.10.1", features = ["blocking", "json"] }
