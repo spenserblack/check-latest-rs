@@ -29,8 +29,13 @@ use super::*;
 /// ```
 ///
 /// [Crates.io]: https://crates.io/
-pub fn get_newest_version(crate_name: &str, current_crate_version: &str, user_agent: &str) -> Result<Option<Version>, Error> {
-    let current_version = Version::parse(current_crate_version).map_err(|_| "Couldn't parse current version")?;
+pub fn get_newest_version(
+    crate_name: &str,
+    current_crate_version: &str,
+    user_agent: &str,
+) -> Result<Option<Version>, Error> {
+    let current_version = Version::parse(current_crate_version)
+        .map_err(|_| "Couldn't parse current version")?;
     let newest_version = get_versions(crate_name, user_agent)?.newest_version;
     let newest_version = if current_version < newest_version {
         Some(newest_version)
@@ -130,7 +135,11 @@ pub fn get_newest_version(crate_name: &str, current_crate_version: &str, user_ag
 #[macro_export]
 macro_rules! newest_version {
     () => {
-        $crate::newest_version!(crate_name = $crate::crate_name!(), version = $crate::crate_version!(), user_agent = $crate::user_agent!())
+        $crate::newest_version!(
+            crate_name = $crate::crate_name!(),
+            version = $crate::crate_version!(),
+            user_agent = $crate::user_agent!(),
+        )
     };
     // All 3 specified {{{
     (crate_name = $crate_name:expr, version = $version:expr, user_agent = $user_agent:expr $(,)?) => {
@@ -182,6 +191,10 @@ macro_rules! newest_version {
     };
 
     () => {
-        $crate::get_newest_version($crate::crate_name!(), $crate::crate_version!(), $crate::user_agent!())
+        $crate::get_newest_version(
+            $crate::crate_name!(),
+            $crate::crate_version!(),
+            $crate::user_agent!(),
+        )
     };
 }

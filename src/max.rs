@@ -25,8 +25,13 @@ use super::*;
 /// ```
 ///
 /// [Crates.io]: https://crates.io/
-pub fn get_max_version(crate_name: &str, current_crate_version: &str, user_agent: &str) -> Result<Option<Version>, Error> {
-    let current_version = Version::parse(current_crate_version).map_err(|_| "Couldn't parse current version")?;
+pub fn get_max_version(
+    crate_name: &str,
+    current_crate_version: &str,
+    user_agent: &str,
+) -> Result<Option<Version>, Error> {
+    let current_version = Version::parse(current_crate_version)
+        .map_err(|_| "Couldn't parse current version")?;
     let max_version = get_versions(crate_name, user_agent)?.max_version;
     let max_version = if current_version < max_version {
         Some(max_version)
@@ -71,7 +76,11 @@ pub fn get_max_version(crate_name: &str, current_crate_version: &str, user_agent
 /// ```
 ///
 /// [Crates.io]: https://crates.io/
-pub fn get_max_minor_version(crate_name: &str, version: &str, user_agent: &str) -> Result<Option<Version>, Error> {
+pub fn get_max_minor_version(
+    crate_name: &str,
+    version: &str,
+    user_agent: &str,
+) -> Result<Option<Version>, Error> {
     let versions = get_version_list(crate_name, user_agent)?;
     let current_version = Version::parse(version).map_err(|_| "Couldn't parse `version`")?;
 
@@ -118,7 +127,11 @@ pub fn get_max_minor_version(crate_name: &str, version: &str, user_agent: &str) 
 /// ```
 ///
 /// [Crates.io]: https://crates.io/
-pub fn get_max_patch(crate_name: &str, version: &str, user_agent: &str) -> Result<Option<Version>, Error> {
+pub fn get_max_patch(
+    crate_name: &str,
+    version: &str,
+    user_agent: &str,
+) -> Result<Option<Version>, Error> {
     let versions = get_version_list(crate_name, user_agent)?;
     let current_version = Version::parse(version).map_err(|_| "Couldn't parse `version`")?;
 
@@ -217,7 +230,11 @@ pub fn get_max_patch(crate_name: &str, version: &str, user_agent: &str) -> Resul
 #[macro_export]
 macro_rules! max_version {
     () => {
-        $crate::max_version!(crate_name = $crate::crate_name!(), version = $crate::crate_version!(), user_agent = $crate::user_agent!())
+        $crate::max_version!(
+            crate_name = $crate::crate_name!(),
+            version = $crate::crate_version!(),
+            user_agent = $crate::user_agent!(),
+        )
     };
     // All 3 specified {{{
     (crate_name = $crate_name:expr, version = $version:expr, user_agent = $user_agent:expr $(,)?) => {
@@ -269,7 +286,11 @@ macro_rules! max_version {
     };
 
     () => {
-        $crate::get_max_version($crate::crate_name!(), $crate::crate_version!(), $crate::user_agent!())
+        $crate::get_max_version(
+            $crate::crate_name!(),
+            $crate::crate_version!(),
+            $crate::user_agent!(),
+        )
     };
 }
 
@@ -359,7 +380,11 @@ macro_rules! max_version {
 #[macro_export]
 macro_rules! max_minor_version {
     () => {
-        $crate::max_minor_version!(crate_name = $crate::crate_name!(), version = $crate::crate_version!(), user_agent = $crate::user_agent!())
+        $crate::max_minor_version!(
+            crate_name = $crate::crate_name!(),
+            version = $crate::crate_version!(),
+            user_agent = $crate::user_agent!(),
+        )
     };
     // All 3 specified {{{
     (crate_name = $crate_name:expr, version = $version:expr, user_agent = $user_agent:expr $(,)?) => {
@@ -411,7 +436,11 @@ macro_rules! max_minor_version {
     };
 
     () => {
-        $crate::get_max_minor_version($crate::crate_name!(), $crate::crate_version!(), $crate::user_agent!())
+        $crate::get_max_minor_version(
+            $crate::crate_name!(),
+            $crate::crate_version!(),
+            $crate::user_agent!(),
+        )
     };
 }
 
@@ -501,7 +530,11 @@ macro_rules! max_minor_version {
 #[macro_export]
 macro_rules! max_patch {
     () => {
-        $crate::max_patch!(crate_name = $crate::crate_name!(), version = $crate::crate_version!(), user_agent = $crate::user_agent!())
+        $crate::max_patch!(
+            crate_name = $crate::crate_name!(),
+            version = $crate::crate_version!(),
+            user_agent = $crate::user_agent!(),
+        )
     };
     // All 3 specified {{{
     (crate_name = $crate_name:expr, version = $version:expr, user_agent = $user_agent:expr $(,)?) => {
@@ -553,6 +586,10 @@ macro_rules! max_patch {
     };
 
     () => {
-        $crate::get_max_patch($crate::crate_name!(), $crate::crate_version!(), $crate::user_agent!())
+        $crate::get_max_patch(
+            $crate::crate_name!(),
+            $crate::crate_version!(),
+            $crate::user_agent!(),
+        )
     };
 }

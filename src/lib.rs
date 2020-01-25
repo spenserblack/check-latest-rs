@@ -5,9 +5,9 @@
 //!     println!("We've released a new version: {}!", version);
 //! }
 //! ```
-use semver::Version;
 pub use max::*;
 pub use newest::*;
+use semver::Version;
 
 #[derive(Debug)]
 pub struct Versions {
@@ -61,7 +61,10 @@ pub type Error = String;
 ///
 /// [Crates.io]: https://crates.io/
 pub fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions, Error> {
-    let url = format!("https://crates.io/api/v1/crates/{crate_name}", crate_name = crate_name);
+    let url = format!(
+        "https://crates.io/api/v1/crates/{crate_name}",
+        crate_name = crate_name,
+    );
     let response: serde_json::Value = reqwest::blocking::Client::builder()
         .user_agent(format!("{}/{}", crate_name, user_agent))
         .build()
@@ -72,9 +75,7 @@ pub fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions, Erro
         .json()
         .map_err(|_| "Couldn't parse response to JSON")?;
 
-    let crate_data = response
-        .get("crate")
-        .ok_or("Unexpected JSON format")?;
+    let crate_data = response.get("crate").ok_or("Unexpected JSON format")?;
     let max_version = crate_data
         .get("max_version")
         .ok_or("Unexpected JSON format")?
@@ -87,7 +88,8 @@ pub fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions, Erro
         .ok_or("Couldn't parse newest version as str")?;
 
     let max_version = Version::parse(max_version).map_err(|_| "Couldn't parse max version")?;
-    let newest_version = Version::parse(newest_version).map_err(|_| "Couldn't parse newest version")?;
+    let newest_version = Version::parse(newest_version)
+        .map_err(|_| "Couldn't parse newest version")?;
     let versions = Versions {
         max_version,
         newest_version,
@@ -96,7 +98,10 @@ pub fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions, Erro
 }
 
 fn get_version_list(crate_name: &str, user_agent: &str) -> Result<Vec<Version>, Error> {
-    let url = format!("https://crates.io/api/v1/crates/{crate_name}", crate_name = crate_name);
+    let url = format!(
+        "https://crates.io/api/v1/crates/{crate_name}",
+        crate_name = crate_name,
+    );
     let response: serde_json::Value = reqwest::blocking::Client::builder()
         .user_agent(format!("{}/{}", crate_name, user_agent))
         .build()
@@ -111,7 +116,8 @@ fn get_version_list(crate_name: &str, user_agent: &str) -> Result<Vec<Version>, 
         .ok_or("Version list not found")?
         .as_array()
         .ok_or("Couldn't parse version list as array")?;
-    let versions = versions.into_iter()
+    let versions = versions
+        .iter()
         .filter_map(|v| v.get("num"))
         .filter_map(|v| v.as_str())
         .map(|v| Version::parse(v))
@@ -123,19 +129,25 @@ fn get_version_list(crate_name: &str, user_agent: &str) -> Result<Vec<Version>, 
 #[doc(hidden)]
 #[macro_export]
 macro_rules! crate_name {
-    () => (env!("CARGO_PKG_NAME"));
+    () => {
+        env!("CARGO_PKG_NAME")
+    };
 }
 
 #[doc(hidden)]
 #[macro_export]
 macro_rules! crate_version {
-    () => (env!("CARGO_PKG_VERSION"));
+    () => {
+        env!("CARGO_PKG_VERSION")
+    };
 }
 
 #[doc(hidden)]
 #[macro_export]
 macro_rules! user_agent {
-    () => (concat!($crate::crate_name!(), "/", $crate::crate_version!()));
+    () => {
+        concat!($crate::crate_name!(), "/", $crate::crate_version!())
+    };
 }
 
 /// Makes it easier to run `get_versions`.
@@ -219,7 +231,10 @@ macro_rules! user_agent {
 #[macro_export]
 macro_rules! versions {
     () => {
-        $crate::versions!(crate_name = $crate::crate_name!(), user_agent = $crate::user_agent!())
+        $crate::versions!(
+            crate_name = $crate::crate_name!(),
+            user_agent = $crate::user_agent!(),
+        )
     };
     (crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
         $crate::get_versions($crate_name, $user_agent)
