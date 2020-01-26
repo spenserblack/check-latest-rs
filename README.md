@@ -34,7 +34,7 @@ You can make this feature optional by adding this to your `Cargo.toml`.
 [dependencies]
 check-latest = { version = "*", optional = true }
 ```
-You can then selectively compile the parts of your binary that check for later releases with this attribute
+To selectively compile the parts of your binary that check for later releases, add this attribute
 to the parts that should be compiled if this feature is enabled.
 ```rust
 #[cfg(feature = "check-latest")]
