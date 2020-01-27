@@ -18,9 +18,9 @@ if let Ok(Some(version)) = max_version!() {
 
 # Features
 This crate has two features: `async` and `blocking`.
-By default, `blocking` is enabled and `async` is disabled. These defaults are compatible with the
-example in the above section. If you want to use asynchronous requests, you can swap these features
-with the following in you `Cargo.toml`.
+By default, `blocking` is enabled and `async` is disabled. This default is compatible with the
+example in the section titled **The Basics**. If you want to use asynchronous requests, you can
+swap these features with the following in you `Cargo.toml`.
 ```toml
 [dependencies.check-latest]
 version = "*"
