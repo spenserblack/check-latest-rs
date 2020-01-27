@@ -1,6 +1,9 @@
 # Changelog
 
 ## [Unreleased](https://github.com/spenserblack/check-latest-rs/compare/v0.1.0...master)
+### Added
+- `async` feature
+
 ### Changed
 - Blocking requests to be enabled by `blocking` feature
 
