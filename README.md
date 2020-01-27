@@ -22,8 +22,10 @@ By default, `blocking` is enabled and `async` is disabled. These defaults are co
 example in the above section. If you want to use asynchronous requests, you can swap these features
 with the following in you `Cargo.toml`.
 ```toml
-[dependencies]
-check-latest = { default-features = false, features = ["async"] }
+[dependencies.check-latest]
+version = "*"
+default-features = false
+features = ["async"]
 ```
 *__NOTE__ There's nothing stopping you from enabling both `async` and `blocking`, but that's
 unlikely to be necessary.*
@@ -43,8 +45,9 @@ off this feature for a smaller binary. Some may simply prefer not to be told to 
 
 You can make this feature optional by adding this to your `Cargo.toml`.
 ```toml
-[dependencies]
-check-latest = { version = "*", optional = true }
+[dependencies.check-latest]
+version = "*"
+optional = true
 ```
 To selectively compile the parts of your binary that check for later releases, add this attribute
 to the parts that should be compiled if this feature is enabled.
