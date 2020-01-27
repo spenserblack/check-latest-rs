@@ -32,11 +32,7 @@ unlikely to be necessary.*
 
 # Notes
 
-Using this library in your
-
-| Rust Library | Rust Binary |
-| :----------: | :---------: |
-|      🤢      |     👍      |
+## Making this Library Optional
 
 If you use this library for your binary, you should probably make this an optional feature.
 Simply checking for the latest version on [Crates.io] brings over *a lot* of dependencies
