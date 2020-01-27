@@ -1,5 +1,5 @@
-use crate::Error;
 use super::*;
+use crate::Error;
 use semver::Version;
 
 /// *__NOTE__ You probably want to use `max_version_async!`*
@@ -215,13 +215,21 @@ macro_rules! max_version_async {
     };
 
     (crate_name = $crate_name:expr $(,)?) => {
-        $crate::r#async::get_max_version($crate_name, $crate::crate_version!(), $crate::user_agent!())
+        $crate::r#async::get_max_version(
+            $crate_name,
+            $crate::crate_version!(),
+            $crate::user_agent!(),
+        )
     };
     (version = $version:expr $(,)?) => {
         $crate::r#async::get_max_version($crate::crate_name!(), $version, $crate::user_agent!())
     };
     (user_agent = $user_agent:expr $(,)?) => {
-        $crate::r#async::get_max_version($crate::crate_name!(), $crate::crate_version!(), $user_agent)
+        $crate::r#async::get_max_version(
+            $crate::crate_name!(),
+            $crate::crate_version!(),
+            $user_agent,
+        )
     };
 
     () => {
@@ -296,13 +304,25 @@ macro_rules! max_minor_version_async {
     };
 
     (crate_name = $crate_name:expr $(,)?) => {
-        $crate::r#async::get_max_minor_version($crate_name, $crate::crate_version!(), $crate::user_agent!())
+        $crate::r#async::get_max_minor_version(
+            $crate_name,
+            $crate::crate_version!(),
+            $crate::user_agent!(),
+        )
     };
     (version = $version:expr $(,)?) => {
-        $crate::r#async::get_max_minor_version($crate::crate_name!(), $version, $crate::user_agent!())
+        $crate::r#async::get_max_minor_version(
+            $crate::crate_name!(),
+            $version,
+            $crate::user_agent!(),
+        )
     };
     (user_agent = $user_agent:expr $(,)?) => {
-        $crate::r#async::get_max_minor_version($crate::crate_name!(), $crate::crate_version!(), $user_agent)
+        $crate::r#async::get_max_minor_version(
+            $crate::crate_name!(),
+            $crate::crate_version!(),
+            $user_agent,
+        )
     };
 
     () => {
