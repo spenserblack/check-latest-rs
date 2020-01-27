@@ -12,7 +12,7 @@ repository = "https://github.com/spenserblack/check-latest-rs"
 exclude = [".github/*", ".gitignore", ".editorconfig", ".travis.yml", "CHANGELOG.md"]
 
 [features]
-default = ["all"]
+default = ["blocking"]
 all = ["async", "blocking"]
 blocking = ["reqwest/blocking"]
 async = []
