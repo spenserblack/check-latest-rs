@@ -1,4 +1,6 @@
+use crate::Error;
 use super::*;
+use semver::Version;
 
 /// *__NOTE__ You probably want to use `max_version!`*
 ///
@@ -13,7 +15,7 @@ use super::*;
 /// # Example
 ///
 /// ```rust,no_run
-/// use check_latest::get_max_version;
+/// use check_latest::blocking::get_max_version;
 ///
 /// let name = "my-awesome-crate-bin";
 /// let version = "1.0.0";
@@ -62,7 +64,7 @@ pub fn get_max_version(
 /// # Example
 ///
 /// ```rust,no_run
-/// use check_latest::get_max_minor_version;
+/// use check_latest::blocking::get_max_minor_version;
 ///
 /// let crate_name = "my-awesome-crate-bin";
 /// let version = "1.0.0";
@@ -113,7 +115,7 @@ pub fn get_max_minor_version(
 /// # Example
 ///
 /// ```rust,no_run
-/// use check_latest::get_max_patch;
+/// use check_latest::blocking::get_max_patch;
 ///
 /// let crate_name = "my-awesome-crate-bin";
 /// let version = "1.0.0";
@@ -238,55 +240,55 @@ macro_rules! max_version {
     };
     // All 3 specified {{{
     (crate_name = $crate_name:expr, version = $version:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::get_max_version($crate_name, $version, $user_agent)
+        $crate::blocking::get_max_version($crate_name, $version, $user_agent)
     };
     (crate_name = $crate_name:expr, user_agent = $user_agent:expr, version = $version:expr $(,)?) => {
-        $crate::get_max_version($crate_name, $version, $user_agent)
+        $crate::blocking::get_max_version($crate_name, $version, $user_agent)
     };
     (version = $version:expr, crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::get_max_version($crate_name, $version, $user_agent)
+        $crate::blocking::get_max_version($crate_name, $version, $user_agent)
     };
     (version = $version:expr, user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::get_max_version($crate_name, $version, $user_agent)
+        $crate::blocking::get_max_version($crate_name, $version, $user_agent)
     };
     (user_agent = $user_agent:expr, crate_name = $crate_name:expr, version = $version:expr $(,)?) => {
-        $crate::get_max_version($crate_name, $version, $user_agent)
+        $crate::blocking::get_max_version($crate_name, $version, $user_agent)
     };
     (user_agent = $user_agent:expr, version = $version:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::get_max_version($crate_name, $version, $user_agent)
+        $crate::blocking::get_max_version($crate_name, $version, $user_agent)
     };
 
     (version = $version:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::get_max_version($crate::crate_name!(), $version, $user_agent)
+        $crate::blocking::get_max_version($crate::crate_name!(), $version, $user_agent)
     };
     (user_agent = $user_agent:expr, version = $version:expr $(,)?) => {
-        $crate::get_max_version($crate::crate_name!(), $version, $user_agent)
+        $crate::blocking::get_max_version($crate::crate_name!(), $version, $user_agent)
     };
     (crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::get_max_version($crate_name, $crate::crate_version!(), $user_agent)
+        $crate::blocking::get_max_version($crate_name, $crate::crate_version!(), $user_agent)
     };
     (user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::get_max_version($crate_name, $crate::crate_version!(), $user_agent)
+        $crate::blocking::get_max_version($crate_name, $crate::crate_version!(), $user_agent)
     };
     (crate_name = $crate_name:expr, version = $version:expr $(,)?) => {
-        $crate::get_max_version($crate_name, $version, $crate::user_agent!())
+        $crate::blocking::get_max_version($crate_name, $version, $crate::user_agent!())
     };
     (version = $version:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::get_max_version($crate_name, $version, $crate::user_agent!())
+        $crate::blocking::get_max_version($crate_name, $version, $crate::user_agent!())
     };
 
     (crate_name = $crate_name:expr $(,)?) => {
-        $crate::get_max_version($crate_name, $crate::crate_version!(), $crate::user_agent!())
+        $crate::blocking::get_max_version($crate_name, $crate::crate_version!(), $crate::user_agent!())
     };
     (version = $version:expr $(,)?) => {
-        $crate::get_max_version($crate::crate_name!(), $version, $crate::user_agent!())
+        $crate::blocking::get_max_version($crate::crate_name!(), $version, $crate::user_agent!())
     };
     (user_agent = $user_agent:expr $(,)?) => {
-        $crate::get_max_version($crate::crate_name!(), $crate::crate_version!(), $user_agent)
+        $crate::blocking::get_max_version($crate::crate_name!(), $crate::crate_version!(), $user_agent)
     };
 
     () => {
-        $crate::get_max_version(
+        $crate::blocking::get_max_version(
             $crate::crate_name!(),
             $crate::crate_version!(),
             $crate::user_agent!(),
@@ -335,12 +337,12 @@ macro_rules! max_version {
 /// ## Set Crate Version to Compare
 ///
 /// ```rust,no_run
-/// use check_latest::max_version;
+/// use check_latest::max_minor_version;
 ///
 /// let current_version = "1.2.3";
 ///
 ///
-/// if let Ok(Some(version)) = max_version!(version = current_version) {
+/// if let Ok(Some(version)) = max_minor_version!(version = current_version) {
 ///     println!("Minor version has been updated to {}!", version);
 /// }
 /// ```
@@ -348,11 +350,11 @@ macro_rules! max_version {
 /// ## Set User Agent
 ///
 /// ```rust,no_run
-/// use check_latest::max_version;
+/// use check_latest::max_minor_version;
 ///
 /// let user_agent = "My extra detailed user agent";
 ///
-/// if let Ok(Some(version)) = max_version!(user_agent = user_agent) {
+/// if let Ok(Some(version)) = max_minor_version!(user_agent = user_agent) {
 ///     println!("Minor version has been updated to {}!", version);
 /// }
 /// ```
@@ -360,20 +362,20 @@ macro_rules! max_version {
 /// ## Set All 3
 ///
 /// ```rust,no_run
-/// use check_latest::max_version;
+/// use check_latest::max_minor_version;
 ///
 /// let crate_name = "my-renamed-crate";
 /// let current_version = "1.2.3";
 /// let user_agent = "My extra detailed user agent";
 ///
-/// let max_version = max_version!(
+/// let max_minor_version = max_minor_version!(
 ///     // These can be shuffled BTW
 ///     crate_name = crate_name,
 ///     version = current_version,
 ///     user_agent = user_agent,
 /// );
 ///
-/// if let Ok(Some(version)) = max_version {
+/// if let Ok(Some(version)) = max_minor_version {
 ///     println!("Minor version has been updated to {}!", version);
 /// }
 /// ```
@@ -388,55 +390,55 @@ macro_rules! max_minor_version {
     };
     // All 3 specified {{{
     (crate_name = $crate_name:expr, version = $version:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::get_max_minor_version($crate_name, $version, $user_agent)
+        $crate::blocking::get_max_minor_version($crate_name, $version, $user_agent)
     };
     (crate_name = $crate_name:expr, user_agent = $user_agent:expr, version = $version:expr $(,)?) => {
-        $crate::get_max_minor_version($crate_name, $version, $user_agent)
+        $crate::blocking::get_max_minor_version($crate_name, $version, $user_agent)
     };
     (version = $version:expr, crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::get_max_minor_version($crate_name, $version, $user_agent)
+        $crate::blocking::get_max_minor_version($crate_name, $version, $user_agent)
     };
     (version = $version:expr, user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::get_max_minor_version($crate_name, $version, $user_agent)
+        $crate::blocking::get_max_minor_version($crate_name, $version, $user_agent)
     };
     (user_agent = $user_agent:expr, crate_name = $crate_name:expr, version = $version:expr $(,)?) => {
-        $crate::get_max_minor_version($crate_name, $version, $user_agent)
+        $crate::blocking::get_max_minor_version($crate_name, $version, $user_agent)
     };
     (user_agent = $user_agent:expr, version = $version:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::get_max_minor_version($crate_name, $version, $user_agent)
+        $crate::blocking::get_max_minor_version($crate_name, $version, $user_agent)
     };
 
     (version = $version:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::get_max_minor_version($crate::crate_name!(), $version, $user_agent)
+        $crate::blocking::get_max_minor_version($crate::crate_name!(), $version, $user_agent)
     };
     (user_agent = $user_agent:expr, version = $version:expr $(,)?) => {
-        $crate::get_max_minor_version($crate::crate_name!(), $version, $user_agent)
+        $crate::blocking::get_max_minor_version($crate::crate_name!(), $version, $user_agent)
     };
     (crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::get_max_minor_version($crate_name, $crate::crate_version!(), $user_agent)
+        $crate::blocking::get_max_minor_version($crate_name, $crate::crate_version!(), $user_agent)
     };
     (user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::get_max_minor_version($crate_name, $crate::crate_version!(), $user_agent)
+        $crate::blocking::get_max_minor_version($crate_name, $crate::crate_version!(), $user_agent)
     };
     (crate_name = $crate_name:expr, version = $version:expr $(,)?) => {
-        $crate::get_max_minor_version($crate_name, $version, $crate::user_agent!())
+        $crate::blocking::get_max_minor_version($crate_name, $version, $crate::user_agent!())
     };
     (version = $version:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::get_max_minor_version($crate_name, $version, $crate::user_agent!())
+        $crate::blocking::get_max_minor_version($crate_name, $version, $crate::user_agent!())
     };
 
     (crate_name = $crate_name:expr $(,)?) => {
-        $crate::get_max_minor_version($crate_name, $crate::crate_version!(), $crate::user_agent!())
+        $crate::blocking::get_max_minor_version($crate_name, $crate::crate_version!(), $crate::user_agent!())
     };
     (version = $version:expr $(,)?) => {
-        $crate::get_max_minor_version($crate::crate_name!(), $version, $crate::user_agent!())
+        $crate::blocking::get_max_minor_version($crate::crate_name!(), $version, $crate::user_agent!())
     };
     (user_agent = $user_agent:expr $(,)?) => {
-        $crate::get_max_minor_version($crate::crate_name!(), $crate::crate_version!(), $user_agent)
+        $crate::blocking::get_max_minor_version($crate::crate_name!(), $crate::crate_version!(), $user_agent)
     };
 
     () => {
-        $crate::get_max_minor_version(
+        $crate::blocking::get_max_minor_version(
             $crate::crate_name!(),
             $crate::crate_version!(),
             $crate::user_agent!(),
@@ -485,12 +487,12 @@ macro_rules! max_minor_version {
 /// ## Set Crate Version to Compare
 ///
 /// ```rust,no_run
-/// use check_latest::max_version;
+/// use check_latest::max_patch;
 ///
 /// let current_version = "1.2.3";
 ///
 ///
-/// if let Ok(Some(version)) = max_version!(version = current_version) {
+/// if let Ok(Some(version)) = max_patch!(version = current_version) {
 ///     println!("A new patch has been released: {}!", version);
 /// }
 /// ```
@@ -498,11 +500,11 @@ macro_rules! max_minor_version {
 /// ## Set User Agent
 ///
 /// ```rust,no_run
-/// use check_latest::max_version;
+/// use check_latest::max_patch;
 ///
 /// let user_agent = "My extra detailed user agent";
 ///
-/// if let Ok(Some(version)) = max_version!(user_agent = user_agent) {
+/// if let Ok(Some(version)) = max_patch!(user_agent = user_agent) {
 ///     println!("A new patch has been released: {}!", version);
 /// }
 /// ```
@@ -510,20 +512,20 @@ macro_rules! max_minor_version {
 /// ## Set All 3
 ///
 /// ```rust,no_run
-/// use check_latest::max_version;
+/// use check_latest::max_patch;
 ///
 /// let crate_name = "my-renamed-crate";
 /// let current_version = "1.2.3";
 /// let user_agent = "My extra detailed user agent";
 ///
-/// let max_version = max_version!(
+/// let max_patch = max_patch!(
 ///     // These can be shuffled BTW
 ///     crate_name = crate_name,
 ///     version = current_version,
 ///     user_agent = user_agent,
 /// );
 ///
-/// if let Ok(Some(version)) = max_version {
+/// if let Ok(Some(version)) = max_patch {
 ///     println!("A new patch has been released: {}!", version);
 /// }
 /// ```
@@ -538,55 +540,55 @@ macro_rules! max_patch {
     };
     // All 3 specified {{{
     (crate_name = $crate_name:expr, version = $version:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::get_max_patch($crate_name, $version, $user_agent)
+        $crate::blocking::get_max_patch($crate_name, $version, $user_agent)
     };
     (crate_name = $crate_name:expr, user_agent = $user_agent:expr, version = $version:expr $(,)?) => {
-        $crate::get_max_patch($crate_name, $version, $user_agent)
+        $crate::blocking::get_max_patch($crate_name, $version, $user_agent)
     };
     (version = $version:expr, crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::get_max_patch($crate_name, $version, $user_agent)
+        $crate::blocking::get_max_patch($crate_name, $version, $user_agent)
     };
     (version = $version:expr, user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::get_max_patch($crate_name, $version, $user_agent)
+        $crate::blocking::get_max_patch($crate_name, $version, $user_agent)
     };
     (user_agent = $user_agent:expr, crate_name = $crate_name:expr, version = $version:expr $(,)?) => {
-        $crate::get_max_patch($crate_name, $version, $user_agent)
+        $crate::blocking::get_max_patch($crate_name, $version, $user_agent)
     };
     (user_agent = $user_agent:expr, version = $version:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::get_max_patch($crate_name, $version, $user_agent)
+        $crate::blocking::get_max_patch($crate_name, $version, $user_agent)
     };
 
     (version = $version:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::get_max_patch($crate::crate_name!(), $version, $user_agent)
+        $crate::blocking::get_max_patch($crate::crate_name!(), $version, $user_agent)
     };
     (user_agent = $user_agent:expr, version = $version:expr $(,)?) => {
-        $crate::get_max_patch($crate::crate_name!(), $version, $user_agent)
+        $crate::blocking::get_max_patch($crate::crate_name!(), $version, $user_agent)
     };
     (crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::get_max_patch($crate_name, $crate::crate_version!(), $user_agent)
+        $crate::blocking::get_max_patch($crate_name, $crate::crate_version!(), $user_agent)
     };
     (user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::get_max_patch($crate_name, $crate::crate_version!(), $user_agent)
+        $crate::blocking::get_max_patch($crate_name, $crate::crate_version!(), $user_agent)
     };
     (crate_name = $crate_name:expr, version = $version:expr $(,)?) => {
-        $crate::get_max_patch($crate_name, $version, $crate::user_agent!())
+        $crate::blocking::get_max_patch($crate_name, $version, $crate::user_agent!())
     };
     (version = $version:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::get_max_patch($crate_name, $version, $crate::user_agent!())
+        $crate::blocking::get_max_patch($crate_name, $version, $crate::user_agent!())
     };
 
     (crate_name = $crate_name:expr $(,)?) => {
-        $crate::get_max_patch($crate_name, $crate::crate_version!(), $crate::user_agent!())
+        $crate::blocking::get_max_patch($crate_name, $crate::crate_version!(), $crate::user_agent!())
     };
     (version = $version:expr $(,)?) => {
-        $crate::get_max_patch($crate::crate_name!(), $version, $crate::user_agent!())
+        $crate::blocking::get_max_patch($crate::crate_name!(), $version, $crate::user_agent!())
     };
     (user_agent = $user_agent:expr $(,)?) => {
-        $crate::get_max_patch($crate::crate_name!(), $crate::crate_version!(), $user_agent)
+        $crate::blocking::get_max_patch($crate::crate_name!(), $crate::crate_version!(), $user_agent)
     };
 
     () => {
-        $crate::get_max_patch(
+        $crate::blocking::get_max_patch(
             $crate::crate_name!(),
             $crate::crate_version!(),
             $crate::user_agent!(),

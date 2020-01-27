@@ -1,4 +1,6 @@
+use crate::Error;
 use super::*;
+use semver::Version;
 
 /// *__NOTE__ You probably want to use `newest_version!`*
 ///
@@ -17,7 +19,7 @@ use super::*;
 /// # Example
 ///
 /// ```rust,no_run
-/// use check_latest::get_newest_version;
+/// use check_latest::blocking::get_newest_version;
 ///
 /// let name = "my-awesome-crate-bin";
 /// let version = "1.0.0";
@@ -143,55 +145,55 @@ macro_rules! newest_version {
     };
     // All 3 specified {{{
     (crate_name = $crate_name:expr, version = $version:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::get_newest_version($crate_name, $version, $user_agent)
+        $crate::blocking::get_newest_version($crate_name, $version, $user_agent)
     };
     (crate_name = $crate_name:expr, user_agent = $user_agent:expr, version = $version:expr $(,)?) => {
-        $crate::get_newest_version($crate_name, $version, $user_agent)
+        $crate::blocking::get_newest_version($crate_name, $version, $user_agent)
     };
     (version = $version:expr, crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::get_newest_version($crate_name, $version, $user_agent)
+        $crate::blocking::get_newest_version($crate_name, $version, $user_agent)
     };
     (version = $version:expr, user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::get_newest_version($crate_name, $version, $user_agent)
+        $crate::blocking::get_newest_version($crate_name, $version, $user_agent)
     };
     (user_agent = $user_agent:expr, crate_name = $crate_name:expr, version = $version:expr $(,)?) => {
-        $crate::get_newest_version($crate_name, $version, $user_agent)
+        $crate::blocking::get_newest_version($crate_name, $version, $user_agent)
     };
     (user_agent = $user_agent:expr, version = $version:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::get_newest_version($crate_name, $version, $user_agent)
+        $crate::blocking::get_newest_version($crate_name, $version, $user_agent)
     };
 
     (version = $version:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::get_newest_version($crate::crate_name!(), $version, $user_agent)
+        $crate::blocking::get_newest_version($crate::crate_name!(), $version, $user_agent)
     };
     (user_agent = $user_agent:expr, version = $version:expr $(,)?) => {
-        $crate::get_newest_version($crate::crate_name!(), $version, $user_agent)
+        $crate::blocking::get_newest_version($crate::crate_name!(), $version, $user_agent)
     };
     (crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::get_newest_version($crate_name, $crate::crate_version!(), $user_agent)
+        $crate::blocking::get_newest_version($crate_name, $crate::crate_version!(), $user_agent)
     };
     (user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::get_newest_version($crate_name, $crate::crate_version!(), $user_agent)
+        $crate::blocking::get_newest_version($crate_name, $crate::crate_version!(), $user_agent)
     };
     (crate_name = $crate_name:expr, version = $version:expr $(,)?) => {
-        $crate::get_newest_version($crate_name, $version, $crate::user_agent!())
+        $crate::blocking::get_newest_version($crate_name, $version, $crate::user_agent!())
     };
     (version = $version:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::get_newest_version($crate_name, $version, $crate::user_agent!())
+        $crate::blocking::get_newest_version($crate_name, $version, $crate::user_agent!())
     };
 
     (crate_name = $crate_name:expr $(,)?) => {
-        $crate::get_newest_version($crate_name, $crate::crate_version!(), $crate::user_agent!())
+        $crate::blocking::get_newest_version($crate_name, $crate::crate_version!(), $crate::user_agent!())
     };
     (version = $version:expr $(,)?) => {
-        $crate::get_newest_version($crate::crate_name!(), $version, $crate::user_agent!())
+        $crate::blocking::get_newest_version($crate::crate_name!(), $version, $crate::user_agent!())
     };
     (user_agent = $user_agent:expr $(,)?) => {
-        $crate::get_newest_version($crate::crate_name!(), $crate::crate_version!(), $user_agent)
+        $crate::blocking::get_newest_version($crate::crate_name!(), $crate::crate_version!(), $user_agent)
     };
 
     () => {
-        $crate::get_newest_version(
+        $crate::blocking::get_newest_version(
             $crate::crate_name!(),
             $crate::crate_version!(),
             $crate::user_agent!(),
