@@ -16,6 +16,18 @@ if let Ok(Some(version)) = max_version!() {
 }
 ```
 
+# Features
+This crate has two features: `async` and `blocking`.
+By default, `blocking` is enabled and `async` is disabled. These defaults are compatible with the
+example in the above section. If you want to use asynchronous requests, you can swap these features
+with the following in you `Cargo.toml`.
+```toml
+[dependencies]
+check-latest = { default-features = false, features = ["async"] }
+```
+*__NOTE__ There's nothing stopping you from enabling both `async` and `blocking`, but that's
+unlikely to be necessary.*
+
 # Notes
 
 Using this library in your
