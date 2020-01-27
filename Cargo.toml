@@ -13,7 +13,6 @@ exclude = [".github/*", ".gitignore", ".editorconfig", ".travis.yml", "CHANGELOG
 
 [features]
 default = ["blocking"]
-all = ["async", "blocking"]
 blocking = ["reqwest/blocking"]
 async = []
 

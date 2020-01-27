@@ -12,6 +12,10 @@ pub struct Versions {
 
 pub type Error = String;
 
+/// Check for version updates with asynchronous requests.
+#[cfg(feature = "async")]
+pub mod r#async;
+
 /// Check for version updates with blocking requests.
 #[cfg(feature = "blocking")]
 pub mod blocking;

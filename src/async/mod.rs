@@ -1,11 +1,13 @@
-//! Enabled with the `blocking` feature
+//! Enabled with the `async` feature
 //!
 //! ```rust,no_run
+//! # async fn run() {
 //! use check_latest::*;
 //!
-//! if let Ok(Some(version)) = max_version!() {
+//! if let Ok(Some(version)) = max_version_async!().await {
 //!     println!("We've released a new version: {}!", version);
 //! }
+//! # }
 //! ```
 
 use crate::{Error, Versions};
@@ -13,7 +15,7 @@ pub use max::*;
 pub use newest::*;
 use semver::Version;
 
-/// *__NOTE__ You probably want to use `versions!`*
+/// *__NOTE__ You probably want to use `versions_async!`*
 ///
 /// `crate_name`: The crate that the version should be checked for.
 ///
@@ -41,32 +43,36 @@ use semver::Version;
 /// # Example
 ///
 /// ```rust,no_run
-/// use check_latest::blocking::get_versions;
+/// # async fn run() {
+/// use check_latest::r#async::get_versions;
 /// use semver::Version;
 ///
 /// let current_version = Version::parse("1.0.0").unwrap();
 ///
-/// if let Ok(versions) = get_versions("my-awesome-crate-bin", "my-awesome-crate-bin/1.0.0") {
+/// if let Ok(versions) = get_versions("my-awesome-crate-bin", "my-awesome-crate-bin/1.0.0").await {
 ///     if versions.max_version > current_version {
 ///         println!("Go get the new version!");
 ///     }
 /// }
+/// # }
 /// ```
 ///
 /// [Crates.io]: https://crates.io/
-pub fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions, Error> {
+pub async fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions, Error> {
     let url = format!(
         "https://crates.io/api/v1/crates/{crate_name}",
         crate_name = crate_name,
     );
-    let response: serde_json::Value = reqwest::blocking::Client::builder()
+    let response: serde_json::Value = reqwest::Client::builder()
         .user_agent(format!("{}/{}", crate_name, user_agent))
         .build()
         .map_err(|_| "Couldn't build client")?
         .get(&url)
         .send()
+        .await
         .map_err(|_| "Couldn't request crate info")?
         .json()
+        .await
         .map_err(|_| "Couldn't parse response to JSON")?;
 
     let crate_data = response.get("crate").ok_or("Unexpected JSON format")?;
@@ -91,19 +97,21 @@ pub fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions, Erro
     Ok(versions)
 }
 
-fn get_version_list(crate_name: &str, user_agent: &str) -> Result<Vec<Version>, Error> {
+async fn get_version_list(crate_name: &str, user_agent: &str) -> Result<Vec<Version>, Error> {
     let url = format!(
         "https://crates.io/api/v1/crates/{crate_name}",
         crate_name = crate_name,
     );
-    let response: serde_json::Value = reqwest::blocking::Client::builder()
+    let response: serde_json::Value = reqwest::Client::builder()
         .user_agent(format!("{}/{}", crate_name, user_agent))
         .build()
         .map_err(|_| "Couldn't build client")?
         .get(&url)
         .send()
+        .await
         .map_err(|_| "Couldn't request crate info")?
         .json()
+        .await
         .map_err(|_| "Couldn't parse response to JSON")?;
     let versions = response
         .get("versions")
@@ -120,97 +128,38 @@ fn get_version_list(crate_name: &str, user_agent: &str) -> Result<Vec<Version>, 
     Ok(versions)
 }
 
-/// Makes it easier to run `get_versions`.
+/// Asynchronous version of `versions!`. View the documentation of `versions!`
+/// for full usage.
 ///
-/// `versions!()` will predict the `crate_name` and `user_agent`. `crate_name`
-/// will default to package name in your `Cargo.toml` file.
-/// `user_agent` will default to the name of your crate as defined in
-/// `Cargo.toml` followed by a `/` and the version of your package as defined
-/// in your `Cargo.toml` file (e.g. `my-crate-name/1.0.0`).
-///
-/// If you do not want these defaults to be used, you can set your own values.
-/// See the examples below.
-///
-/// # Examples
-///
-/// ## Use Defaults
+/// # Example
 ///
 /// ```rust,no_run
-/// use check_latest::versions;
+/// # async fn run() {
+/// use check_latest::versions_async;
 /// use semver::Version;
 ///
 /// let current_version = Version::parse("1.0.0").unwrap();
 ///
-/// if let Ok(versions) = versions!() {
+/// if let Ok(versions) = versions_async!().await {
 ///     if versions.max_version > current_version {
 ///         println!("Go get a new version!");
 ///     }
 /// }
-/// ```
-///
-/// ## Set Crate Name
-///
-/// ```rust,no_run
-/// use check_latest::versions;
-/// use semver::Version;
-///
-/// let current_version = Version::parse("1.0.0").unwrap();
-///
-/// if let Ok(versions) = versions!(crate_name = "my-renamed-crate") {
-///     if versions.max_version > current_version {
-///         println!("Go get a new version!");
-///     }
-/// }
-/// ```
-///
-/// ## Set User Agent
-///
-/// ```rust,no_run
-/// use check_latest::versions;
-/// use semver::Version;
-///
-/// let current_version = Version::parse("1.0.0").unwrap();
-///
-/// if let Ok(versions) = versions!(user_agent = "my extra detailed user agent") {
-///     if versions.max_version > current_version {
-///         println!("Go get a new version!");
-///     }
-/// }
-/// ```
-///
-/// ## Set Both
-///
-/// ```rust,no_run
-/// use check_latest::versions;
-/// use semver::Version;
-///
-/// let current_version = Version::parse("1.0.0").unwrap();
-///
-/// let crate_name = "my-renamed-crate";
-/// let user_agent = "my extra detailed user agent";
-///
-/// // This is reversible BTW
-/// let versions = versions!(crate_name = crate_name, user_agent = user_agent);
-///
-/// if let Ok(versions) = versions {
-///     if versions.max_version > current_version {
-///         println!("Go get a new version!");
-///     }
-/// }
+/// # }
 /// ```
 #[macro_export]
-macro_rules! versions {
+macro_rules! versions_async {
     () => {
-        $crate::versions!(
+        $crate::versions_async!(
             crate_name = $crate::crate_name!(),
             user_agent = $crate::user_agent!(),
         )
     };
     (crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::blocking::get_versions($crate_name, $user_agent)
+        $crate::r#async::get_versions($crate_name, $user_agent)
     };
     (user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::blocking::get_versions($crate_name, $user_agent)
+        $crate::r#async::get_versions($crate_name, $user_agent)
     };
     (crate_name = $crate_name:expr $(,)?) => {
         $crate::versions!(crate_name = $crate_name, user_agent = $crate::user_agent!())
