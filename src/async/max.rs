@@ -180,63 +180,103 @@ macro_rules! max_version_async {
         $crate::r#async::get_max_version($crate_name, $version, $user_agent)
     };
     (crate_name = $crate_name:expr, user_agent = $user_agent:expr, version = $version:expr $(,)?) => {
-        $crate::r#async::get_max_version($crate_name, $version, $user_agent)
+        $crate::max_version_async!(
+            crate_name = $crate_name,
+            version = $version,
+            user_agent = $user_agent,
+        )
     };
     (version = $version:expr, crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::r#async::get_max_version($crate_name, $version, $user_agent)
+        $crate::max_version_async!(
+            crate_name = $crate_name,
+            version = $version,
+            user_agent = $user_agent,
+        )
     };
     (version = $version:expr, user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::r#async::get_max_version($crate_name, $version, $user_agent)
+        $crate::max_version_async!(
+            crate_name = $crate_name,
+            version = $version,
+            user_agent = $user_agent,
+        )
     };
     (user_agent = $user_agent:expr, crate_name = $crate_name:expr, version = $version:expr $(,)?) => {
-        $crate::r#async::get_max_version($crate_name, $version, $user_agent)
+        $crate::max_version_async!(
+            crate_name = $crate_name,
+            version = $version,
+            user_agent = $user_agent,
+        )
     };
     (user_agent = $user_agent:expr, version = $version:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::r#async::get_max_version($crate_name, $version, $user_agent)
+        $crate::max_version_async!(
+            crate_name = $crate_name,
+            version = $version,
+            user_agent = $user_agent,
+        )
     };
 
     (version = $version:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::r#async::get_max_version($crate::crate_name!(), $version, $user_agent)
+        $crate::max_version_async!(
+            crate_name = $crate::crate_name!(),
+            version = $version,
+            user_agent = $user_agent,
+        )
     };
     (user_agent = $user_agent:expr, version = $version:expr $(,)?) => {
-        $crate::r#async::get_max_version($crate::crate_name!(), $version, $user_agent)
+        $crate::max_version_async!(
+            crate_name = $crate::crate_name!(),
+            version = $version,
+            user_agent = $user_agent,
+        )
     };
     (crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::r#async::get_max_version($crate_name, $crate::crate_version!(), $user_agent)
+        $crate::max_version_async!(
+            crate_name = $crate_name,
+            version = $crate::crate_version!(),
+            user_agent = $user_agent,
+        )
     };
     (user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::r#async::get_max_version($crate_name, $crate::crate_version!(), $user_agent)
+        $crate::max_version_async!(
+            crate_name = $crate_name,
+            version = $crate::crate_version!(),
+            user_agent = $user_agent,
+        )
     };
     (crate_name = $crate_name:expr, version = $version:expr $(,)?) => {
-        $crate::r#async::get_max_version($crate_name, $version, $crate::user_agent!())
+        $crate::max_version_async!(
+            crate_name = $crate_name,
+            version = $version,
+            user_agent = $crate::user_agent!(),
+        )
     };
     (version = $version:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::r#async::get_max_version($crate_name, $version, $crate::user_agent!())
+        $crate::max_version_async!(
+            crate_name = $crate_name,
+            version = $version,
+            user_agent = $crate::user_agent!(),
+        )
     };
 
     (crate_name = $crate_name:expr $(,)?) => {
-        $crate::r#async::get_max_version(
-            $crate_name,
-            $crate::crate_version!(),
-            $crate::user_agent!(),
+        $crate::max_version_async!(
+            crate_name = $crate_name,
+            version = $crate::crate_version!(),
+            user_agent = $crate::user_agent!(),
         )
     };
     (version = $version:expr $(,)?) => {
-        $crate::r#async::get_max_version($crate::crate_name!(), $version, $crate::user_agent!())
-    };
-    (user_agent = $user_agent:expr $(,)?) => {
-        $crate::r#async::get_max_version(
-            $crate::crate_name!(),
-            $crate::crate_version!(),
-            $user_agent,
+        $crate::max_version_async!(
+            crate_name = $crate::crate_name!(),
+            version = $version,
+            user_agent = $crate::user_agent!(),
         )
     };
-
-    () => {
-        $crate::r#async::get_max_version(
-            $crate::crate_name!(),
-            $crate::crate_version!(),
-            $crate::user_agent!(),
+    (user_agent = $user_agent:expr $(,)?) => {
+        $crate::max_version_async!(
+            crate_name = $crate::crate_name!(),
+            version = $crate::crate_version!(),
+            user_agent = $user_agent,
         )
     };
 }
@@ -269,67 +309,103 @@ macro_rules! max_minor_version_async {
         $crate::r#async::get_max_minor_version($crate_name, $version, $user_agent)
     };
     (crate_name = $crate_name:expr, user_agent = $user_agent:expr, version = $version:expr $(,)?) => {
-        $crate::r#async::get_max_minor_version($crate_name, $version, $user_agent)
+        $crate::max_minor_version_async!(
+            crate_name = $crate_name,
+            version = $version,
+            user_agent = $user_agent,
+        )
     };
     (version = $version:expr, crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::r#async::get_max_minor_version($crate_name, $version, $user_agent)
+        $crate::max_minor_version_async!(
+            crate_name = $crate_name,
+            version = $version,
+            user_agent = $user_agent,
+        )
     };
     (version = $version:expr, user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::r#async::get_max_minor_version($crate_name, $version, $user_agent)
+        $crate::max_minor_version_async!(
+            crate_name = $crate_name,
+            version = $version,
+            user_agent = $user_agent,
+        )
     };
     (user_agent = $user_agent:expr, crate_name = $crate_name:expr, version = $version:expr $(,)?) => {
-        $crate::r#async::get_max_minor_version($crate_name, $version, $user_agent)
+        $crate::max_minor_version_async!(
+            crate_name = $crate_name,
+            version = $version,
+            user_agent = $user_agent,
+        )
     };
     (user_agent = $user_agent:expr, version = $version:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::r#async::get_max_minor_version($crate_name, $version, $user_agent)
+        $crate::max_minor_version_async!(
+            crate_name = $crate_name,
+            version = $version,
+            user_agent = $user_agent,
+        )
     };
 
     (version = $version:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::r#async::get_max_minor_version($crate::crate_name!(), $version, $user_agent)
+        $crate::max_minor_version_async!(
+            crate_name = $crate::crate_name!(),
+            version = $version,
+            user_agent = $user_agent,
+        )
     };
     (user_agent = $user_agent:expr, version = $version:expr $(,)?) => {
-        $crate::r#async::get_max_minor_version($crate::crate_name!(), $version, $user_agent)
+        $crate::max_minor_version_async!(
+            crate_name = $crate::crate_name!(),
+            version = $version,
+            user_agent = $user_agent,
+        )
     };
     (crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::r#async::get_max_minor_version($crate_name, $crate::crate_version!(), $user_agent)
+        $crate::max_minor_version_async!(
+            crate_name = $crate_name,
+            version = $crate::crate_version!(),
+            user_agent = $user_agent,
+        )
     };
     (user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::r#async::get_max_minor_version($crate_name, $crate::crate_version!(), $user_agent)
+        $crate::max_minor_version_async!(
+            crate_name = $crate_name,
+            version = $crate::crate_version!(),
+            user_agent = $user_agent,
+        )
     };
     (crate_name = $crate_name:expr, version = $version:expr $(,)?) => {
-        $crate::r#async::get_max_minor_version($crate_name, $version, $crate::user_agent!())
+        $crate::max_minor_version_async!(
+            crate_name = $crate_name,
+            version = $version,
+            user_agent = $crate::user_agent!(),
+        )
     };
     (version = $version:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::r#async::get_max_minor_version($crate_name, $version, $crate::user_agent!())
+        $crate::max_minor_version_async!(
+            crate_name = $crate_name,
+            version = $version,
+            user_agent = $crate::user_agent!(),
+        )
     };
 
     (crate_name = $crate_name:expr $(,)?) => {
-        $crate::r#async::get_max_minor_version(
-            $crate_name,
-            $crate::crate_version!(),
-            $crate::user_agent!(),
+        $crate::max_minor_version_async!(
+            crate_name = $crate_name,
+            version = $crate::crate_version!(),
+            user_agent = $crate::user_agent!(),
         )
     };
     (version = $version:expr $(,)?) => {
-        $crate::r#async::get_max_minor_version(
-            $crate::crate_name!(),
-            $version,
-            $crate::user_agent!(),
+        $crate::max_minor_version_async!(
+            crate_name = $crate::crate_name!(),
+            version = $version,
+            user_agent = $crate::user_agent!(),
         )
     };
     (user_agent = $user_agent:expr $(,)?) => {
-        $crate::r#async::get_max_minor_version(
-            $crate::crate_name!(),
-            $crate::crate_version!(),
-            $user_agent,
-        )
-    };
-
-    () => {
-        $crate::r#async::get_max_minor_version(
-            $crate::crate_name!(),
-            $crate::crate_version!(),
-            $crate::user_agent!(),
+        $crate::max_minor_version_async!(
+            crate_name = $crate::crate_name!(),
+            version = $crate::crate_version!(),
+            user_agent = $user_agent,
         )
     };
 }
@@ -362,55 +438,103 @@ macro_rules! max_patch_async {
         $crate::r#async::get_max_patch($crate_name, $version, $user_agent)
     };
     (crate_name = $crate_name:expr, user_agent = $user_agent:expr, version = $version:expr $(,)?) => {
-        $crate::r#async::get_max_patch($crate_name, $version, $user_agent)
+        $crate::max_patch_async!(
+            crate_name = $crate_name,
+            version = $version,
+            user_agent = $user_agent,
+        )
     };
     (version = $version:expr, crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::r#async::get_max_patch($crate_name, $version, $user_agent)
+        $crate::max_patch_async!(
+            crate_name = $crate_name,
+            version = $version,
+            user_agent = $user_agent,
+        )
     };
     (version = $version:expr, user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::r#async::get_max_patch($crate_name, $version, $user_agent)
+        $crate::max_patch_async!(
+            crate_name = $crate_name,
+            version = $version,
+            user_agent = $user_agent,
+        )
     };
     (user_agent = $user_agent:expr, crate_name = $crate_name:expr, version = $version:expr $(,)?) => {
-        $crate::r#async::get_max_patch($crate_name, $version, $user_agent)
+        $crate::max_patch_async!(
+            crate_name = $crate_name,
+            version = $version,
+            user_agent = $user_agent,
+        )
     };
     (user_agent = $user_agent:expr, version = $version:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::r#async::get_max_patch($crate_name, $version, $user_agent)
+        $crate::max_patch_async!(
+            crate_name = $crate_name,
+            version = $version,
+            user_agent = $user_agent,
+        )
     };
 
     (version = $version:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::r#async::get_max_patch($crate::crate_name!(), $version, $user_agent)
+        $crate::max_patch_async!(
+            crate_name = $crate::crate_name!(),
+            version = $version,
+            user_agent = $user_agent,
+        )
     };
     (user_agent = $user_agent:expr, version = $version:expr $(,)?) => {
-        $crate::r#async::get_max_patch($crate::crate_name!(), $version, $user_agent)
+        $crate::max_patch_async!(
+            crate_name = $crate::crate_name!(),
+            version = $version,
+            user_agent = $user_agent,
+        )
     };
     (crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::r#async::get_max_patch($crate_name, $crate::crate_version!(), $user_agent)
+        $crate::max_patch_async!(
+            crate_name = $crate_name,
+            version = $crate::crate_version!(),
+            user_agent = $user_agent,
+        )
     };
     (user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::r#async::get_max_patch($crate_name, $crate::crate_version!(), $user_agent)
+        $crate::max_patch_async!(
+            crate_name = $crate_name,
+            version = $crate::crate_version!(),
+            user_agent = $user_agent,
+        )
     };
     (crate_name = $crate_name:expr, version = $version:expr $(,)?) => {
-        $crate::r#async::get_max_patch($crate_name, $version, $crate::user_agent!())
+        $crate::max_patch_async!(
+            crate_name = $crate_name,
+            version = $version,
+            user_agent = $crate::user_agent!(),
+        )
     };
     (version = $version:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::r#async::get_max_patch($crate_name, $version, $crate::user_agent!())
+        $crate::max_patch_async!(
+            crate_name = $crate_name,
+            version = $version,
+            user_agent = $crate::user_agent!(),
+        )
     };
 
     (crate_name = $crate_name:expr $(,)?) => {
-        $crate::r#async::get_max_patch($crate_name, $crate::crate_version!(), $crate::user_agent!())
+        $crate::max_patch_async!(
+            crate_name = $crate_name,
+            version = $crate::crate_version!(),
+            user_agent = $crate::user_agent!(),
+        )
     };
     (version = $version:expr $(,)?) => {
-        $crate::r#async::get_max_patch($crate::crate_name!(), $version, $crate::user_agent!())
+        $crate::max_patch_async!(
+            crate_name = $crate::crate_name!(),
+            version = $version,
+            user_agent = $crate::user_agent!(),
+        )
     };
     (user_agent = $user_agent:expr $(,)?) => {
-        $crate::r#async::get_max_patch($crate::crate_name!(), $crate::crate_version!(), $user_agent)
-    };
-
-    () => {
-        $crate::r#async::get_max_patch(
-            $crate::crate_name!(),
-            $crate::crate_version!(),
-            $crate::user_agent!(),
+        $crate::max_patch_async!(
+            crate_name = $crate::crate_name!(),
+            version = $crate::crate_version!(),
+            user_agent = $user_agent,
         )
     };
 }
