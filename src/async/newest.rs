@@ -2,7 +2,7 @@ use super::*;
 use crate::Error;
 use semver::Version;
 
-/// *__NOTE__ You probably want to use `newest_version_r#async!`*
+/// *__NOTE__ You probably want to use `newest_version_async!`*
 ///
 /// Compares the current crate version to the newest version available on
 /// [Crates.io].
