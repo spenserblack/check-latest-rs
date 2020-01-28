@@ -1,5 +1,5 @@
 use super::*;
-use crate::Error;
+use crate::Result;
 use semver::Version;
 
 /// *__NOTE__ You probably want to use `max_version!`*
@@ -31,7 +31,7 @@ pub fn get_max_version(
     crate_name: &str,
     current_crate_version: &str,
     user_agent: &str,
-) -> Result<Option<Version>, Error> {
+) -> Result<Option<Version>> {
     let current_version = Version::parse(current_crate_version)
         .map_err(|_| "Couldn't parse current version")?;
     let max_version = get_versions(crate_name, user_agent)?.max_version;
@@ -82,7 +82,7 @@ pub fn get_max_minor_version(
     crate_name: &str,
     version: &str,
     user_agent: &str,
-) -> Result<Option<Version>, Error> {
+) -> Result<Option<Version>> {
     let versions = get_version_list(crate_name, user_agent)?;
     let current_version = Version::parse(version).map_err(|_| "Couldn't parse `version`")?;
 
@@ -133,7 +133,7 @@ pub fn get_max_patch(
     crate_name: &str,
     version: &str,
     user_agent: &str,
-) -> Result<Option<Version>, Error> {
+) -> Result<Option<Version>> {
     let versions = get_version_list(crate_name, user_agent)?;
     let current_version = Version::parse(version).map_err(|_| "Couldn't parse `version`")?;
 

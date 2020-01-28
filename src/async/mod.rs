@@ -10,7 +10,7 @@
 //! # }
 //! ```
 
-use crate::{Error, Versions};
+use crate::{Result, Versions};
 pub use max::*;
 pub use newest::*;
 use semver::Version;
@@ -58,7 +58,7 @@ use semver::Version;
 /// ```
 ///
 /// [Crates.io]: https://crates.io/
-pub async fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions, Error> {
+pub async fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions> {
     let url = format!(
         "https://crates.io/api/v1/crates/{crate_name}",
         crate_name = crate_name,
@@ -97,7 +97,7 @@ pub async fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions
     Ok(versions)
 }
 
-async fn get_version_list(crate_name: &str, user_agent: &str) -> Result<Vec<Version>, Error> {
+async fn get_version_list(crate_name: &str, user_agent: &str) -> Result<Vec<Version>> {
     let url = format!(
         "https://crates.io/api/v1/crates/{crate_name}",
         crate_name = crate_name,

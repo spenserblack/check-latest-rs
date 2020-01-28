@@ -1,5 +1,5 @@
 use super::*;
-use crate::Error;
+use crate::Result;
 use semver::Version;
 
 /// *__NOTE__ You probably want to use `newest_version_async!`*
@@ -37,7 +37,7 @@ pub async fn get_newest_version(
     crate_name: &str,
     current_crate_version: &str,
     user_agent: &str,
-) -> Result<Option<Version>, Error> {
+) -> Result<Option<Version>> {
     let current_version = Version::parse(current_crate_version)
         .map_err(|_| "Couldn't parse current version")?;
     let newest_version = get_versions(crate_name, user_agent)

@@ -1,5 +1,6 @@
 //! Depending on the features you have enabled/disabled, you should view the
 //! documentation for `blocking` and/or `async` for basic usage.
+pub use error::*;
 use semver::Version;
 
 #[derive(Debug)]
@@ -10,8 +11,6 @@ pub struct Versions {
     pub newest_version: Version,
 }
 
-pub type Error = String;
-
 /// Check for version updates with asynchronous requests.
 #[cfg(feature = "async")]
 pub mod r#async;
@@ -19,6 +18,8 @@ pub mod r#async;
 /// Check for version updates with blocking requests.
 #[cfg(feature = "blocking")]
 pub mod blocking;
+
+mod error;
 
 #[doc(hidden)]
 #[macro_export]
