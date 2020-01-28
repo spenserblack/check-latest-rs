@@ -159,7 +159,10 @@ macro_rules! versions_async {
         $crate::r#async::get_versions($crate_name, $user_agent)
     };
     (user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::r#async::get_versions($crate_name, $user_agent)
+        $crate::versions_async!(
+            crate_name = $crate_name,
+            user_agent = $user_agent,
+        )
     };
     (crate_name = $crate_name:expr $(,)?) => {
         $crate::versions!(crate_name = $crate_name, user_agent = $crate::user_agent!())
