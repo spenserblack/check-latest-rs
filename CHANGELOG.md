@@ -1,6 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/spenserblack/check-latest-rs/compare/v0.1.0...master)
+## [Unreleased](https://github.com/spenserblack/check-latest-rs/compare/v0.2.0...master)
+
+## [0.2.0] 2020/01/28
 ### Added
 - `async` feature
 - `Result` type alias
@@ -12,5 +14,7 @@
 ### Fixed
 - Documentation for `max_minor_version!` and `max_patch!` having examples for `max_version!`
 
-## 0.1.0 2019/01/25
+## 0.1.0 2020/01/25
 ### Initial Version :tada:
+
+[0.2.0]: https://github.com/spenserblack/check-latest-rs/compare/v0.1.0...v0.2.0
