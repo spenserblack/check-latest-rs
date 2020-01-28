@@ -1,5 +1,24 @@
 //! Depending on the features you have enabled/disabled, you should view the
 //! documentation for `blocking` and/or `async` for basic usage.
+//!
+//! # Features
+//! ## `blocking`
+//!
+//! This feature is enabled by default.
+//!
+//! Provides the basic usage.
+//!
+//! ## `async`
+//!
+//! Allows you to asynchronously check for available versions.
+//! If enabled, it will provide async versions of the macros, which can be used
+//! with `<macro_name>_async!` For example, `max_version_async!`.
+//!
+//! ```toml
+//! [dependencies.check-latest]
+//! default-features = false # If you want async, you probably don't want blocking
+//! features = ["async"]
+//! ```
 pub use error::*;
 use semver::Version;
 
