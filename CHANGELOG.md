@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased](https://github.com/spenserblack/check-latest-rs/compare/v0.2.0...master)
+### Fixed
+- Some uses of `max_version!` macro failing to compile
 
 ## [0.2.0] 2020/01/28
 ### Added

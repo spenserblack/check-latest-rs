@@ -259,26 +259,38 @@ macro_rules! max_version {
     };
 
     (version = $version:expr, user_agent = $user_agent:expr $(,)?) => {
-        max_version!(crate_name = $crate::crate_name!(), version = $version, user_agent = $user_agent)
+        $crate::max_version!(
+            crate_name = $crate::crate_name!(),
+            version = $version,
+            user_agent = $user_agent,
+        )
     };
     (user_agent = $user_agent:expr, version = $version:expr $(,)?) => {
-        max_version!(version = $version, user_agent = $user_agent)
+        $crate::max_version!(version = $version, user_agent = $user_agent)
     };
     (crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
-        max_version!(crate_name = $crate_name, version = $crate::crate_version!(), user_agent = $user_agent)
+        $crate::max_version!(
+            crate_name = $crate_name,
+            version = $crate::crate_version!(),
+            user_agent = $user_agent,
+        )
     };
     (user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
-        max_version!(crate_name = $crate_name, user_agent = $user_agent)
+        $crate::max_version!(crate_name = $crate_name, user_agent = $user_agent)
     };
     (crate_name = $crate_name:expr, version = $version:expr $(,)?) => {
-        max_version!(crate_name = $crate_name, version = $version, user_agent = $crate::user_agent!())
+        $crate::max_version!(
+            crate_name = $crate_name,
+            version = $version,
+            user_agent = $crate::user_agent!(),
+        )
     };
     (version = $version:expr, crate_name = $crate_name:expr $(,)?) => {
-        max_version!(crate_name = $crate_name, version = $version)
+        $crate::max_version!(crate_name = $crate_name, version = $version)
     };
 
     (crate_name = $crate_name:expr $(,)?) => {
-        max_version!(
+        $crate::max_version!(
             crate_name = $crate_name,
             version = $crate::crate_version!(),
             user_agent = $crate::user_agent!(),
