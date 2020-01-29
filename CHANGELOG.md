@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased](https://github.com/spenserblack/check-latest-rs/compare/v0.2.1...master)
+### Changed
+- `Result` type to be from [`anyhow`](https://crates.io/crates/anyhow) crate
 
 ## [0.2.1] 2020/01/29
 ### Fixed

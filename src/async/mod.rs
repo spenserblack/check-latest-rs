@@ -10,7 +10,8 @@
 //! # }
 //! ```
 
-use crate::*;
+use anyhow::{Context, Result};
+use crate::{CratesioResponse, Versions};
 pub use max::*;
 pub use newest::*;
 use semver::Version;
@@ -66,14 +67,14 @@ pub async fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions
     let response: CratesioResponse = reqwest::Client::builder()
         .user_agent(format!("{}/{}", crate_name, user_agent))
         .build()
-        .map_err(|_| "Couldn't build client")?
+        .context("Couldn't build client")?
         .get(&url)
         .send()
         .await
-        .map_err(|_| "Couldn't request crate info")?
+        .context("Couldn't request crate info")?
         .json()
         .await
-        .map_err(|_| "Couldn't parse response to JSON")?;
+        .context("Couldn't read as JSON")?;
 
     Ok(response.versions)
 }
@@ -86,14 +87,14 @@ async fn get_version_list(crate_name: &str, user_agent: &str) -> Result<Vec<Vers
     let response: CratesioResponse = reqwest::Client::builder()
         .user_agent(format!("{}/{}", crate_name, user_agent))
         .build()
-        .map_err(|_| "Couldn't build client")?
+        .context("Couldn't build client")?
         .get(&url)
         .send()
         .await
-        .map_err(|_| "Couldn't request crate info")?
+        .context("Couldn't request crate info")?
         .json()
         .await
-        .map_err(|_| "Couldn't parse response to JSON")?;
+        .context("Couldn't read as JSON")?;
     let versions = response.all_versions;
     let versions = versions
         .into_iter()

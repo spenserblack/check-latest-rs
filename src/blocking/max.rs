@@ -1,5 +1,5 @@
 use super::*;
-use crate::Result;
+use anyhow::{Context, Result};
 use semver::Version;
 
 /// *__NOTE__ You probably want to use `max_version!`*
@@ -33,8 +33,10 @@ pub fn get_max_version(
     user_agent: &str,
 ) -> Result<Option<Version>> {
     let current_version = Version::parse(current_crate_version)
-        .map_err(|_| "Couldn't parse current version")?;
-    let max_version = get_versions(crate_name, user_agent)?.max_version;
+        .context("Couldn't parse current version")?;
+    let max_version = get_versions(crate_name, user_agent)
+        .context("Couldn't get max version")?
+        .max_version;
     let max_version = if current_version < max_version {
         Some(max_version)
     } else {
@@ -83,8 +85,10 @@ pub fn get_max_minor_version(
     version: &str,
     user_agent: &str,
 ) -> Result<Option<Version>> {
-    let versions = get_version_list(crate_name, user_agent)?;
-    let current_version = Version::parse(version).map_err(|_| "Couldn't parse `version`")?;
+    let versions = get_version_list(crate_name, user_agent)
+        .context("Couldn't get versions list")?;
+    let current_version = Version::parse(version)
+        .context("Couldn't parse `version`")?;
 
     let max_minor_version = versions
         .into_iter()
@@ -134,8 +138,10 @@ pub fn get_max_patch(
     version: &str,
     user_agent: &str,
 ) -> Result<Option<Version>> {
-    let versions = get_version_list(crate_name, user_agent)?;
-    let current_version = Version::parse(version).map_err(|_| "Couldn't parse `version`")?;
+    let versions = get_version_list(crate_name, user_agent)
+        .context("Couldn't get versions list")?;
+    let current_version = Version::parse(version)
+        .context("Couldn't parse `version`")?;
 
     let max_patch = versions
         .into_iter()

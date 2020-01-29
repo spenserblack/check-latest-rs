@@ -19,7 +19,6 @@
 //! default-features = false # If you want async, you probably don't want blocking
 //! features = ["async"]
 //! ```
-pub use error::*;
 use semver::Version;
 use serde::Deserialize;
 
@@ -52,8 +51,6 @@ pub mod r#async;
 /// Check for version updates with blocking requests.
 #[cfg(feature = "blocking")]
 pub mod blocking;
-
-mod error;
 
 #[doc(hidden)]
 #[macro_export]
