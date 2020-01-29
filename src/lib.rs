@@ -21,13 +21,28 @@
 //! ```
 pub use error::*;
 use semver::Version;
+use serde::Deserialize;
 
-#[derive(Debug)]
+#[derive(Deserialize)]
+struct CratesioResponse {
+    #[serde(rename = "crate")]
+    versions: Versions,
+    #[serde(rename = "versions")]
+    all_versions: Vec<VersionListItem>,
+}
+
+#[derive(Debug, Deserialize)]
 pub struct Versions {
     /// The maximum version.
     pub max_version: Version,
     /// The newest version. Not necessarily the maximum version.
     pub newest_version: Version,
+}
+
+#[derive(Deserialize)]
+struct VersionListItem {
+    #[serde(rename = "num")]
+    version: Version,
 }
 
 /// Check for version updates with asynchronous requests.

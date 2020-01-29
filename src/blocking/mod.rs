@@ -8,7 +8,7 @@
 //! }
 //! ```
 
-use crate::{Result, Versions};
+use crate::*;
 pub use max::*;
 pub use newest::*;
 use semver::Version;
@@ -59,7 +59,7 @@ pub fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions> {
         "https://crates.io/api/v1/crates/{crate_name}",
         crate_name = crate_name,
     );
-    let response: serde_json::Value = reqwest::blocking::Client::builder()
+    let response: CratesioResponse = reqwest::blocking::Client::builder()
         .user_agent(format!("{}/{}", crate_name, user_agent))
         .build()
         .map_err(|_| "Couldn't build client")?
@@ -69,26 +69,7 @@ pub fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions> {
         .json()
         .map_err(|_| "Couldn't parse response to JSON")?;
 
-    let crate_data = response.get("crate").ok_or("Unexpected JSON format")?;
-    let max_version = crate_data
-        .get("max_version")
-        .ok_or("Unexpected JSON format")?
-        .as_str()
-        .ok_or("Couldn't parse max version as str")?;
-    let newest_version = crate_data
-        .get("newest_version")
-        .ok_or("Unexpected JSON format")?
-        .as_str()
-        .ok_or("Couldn't parse newest version as str")?;
-
-    let max_version = Version::parse(max_version).map_err(|_| "Couldn't parse max version")?;
-    let newest_version = Version::parse(newest_version)
-        .map_err(|_| "Couldn't parse newest version")?;
-    let versions = Versions {
-        max_version,
-        newest_version,
-    };
-    Ok(versions)
+    Ok(response.versions)
 }
 
 fn get_version_list(crate_name: &str, user_agent: &str) -> Result<Vec<Version>> {
@@ -96,7 +77,7 @@ fn get_version_list(crate_name: &str, user_agent: &str) -> Result<Vec<Version>> 
         "https://crates.io/api/v1/crates/{crate_name}",
         crate_name = crate_name,
     );
-    let response: serde_json::Value = reqwest::blocking::Client::builder()
+    let response: CratesioResponse = reqwest::blocking::Client::builder()
         .user_agent(format!("{}/{}", crate_name, user_agent))
         .build()
         .map_err(|_| "Couldn't build client")?
@@ -105,17 +86,10 @@ fn get_version_list(crate_name: &str, user_agent: &str) -> Result<Vec<Version>> 
         .map_err(|_| "Couldn't request crate info")?
         .json()
         .map_err(|_| "Couldn't parse response to JSON")?;
-    let versions = response
-        .get("versions")
-        .ok_or("Version list not found")?
-        .as_array()
-        .ok_or("Couldn't parse version list as array")?;
+    let versions = response.all_versions;
     let versions = versions
-        .iter()
-        .filter_map(|v| v.get("num"))
-        .filter_map(|v| v.as_str())
-        .map(|v| Version::parse(v))
-        .filter_map(|v| v.ok())
+        .into_iter()
+        .map(|v| v.version)
         .collect();
     Ok(versions)
 }
