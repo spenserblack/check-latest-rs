@@ -38,7 +38,8 @@ pub fn get_max_version(
         .context("Couldn't parse current version")?;
     let max_version = versions
         .into_iter()
-        .max();
+        .max()
+        .filter(|v| v > &current_version);
     Ok(max_version)
 }
 
