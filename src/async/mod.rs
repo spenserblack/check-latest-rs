@@ -62,7 +62,7 @@ use semver::Version;
 pub async fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions> {
     let url = build_url(crate_name);
     let response: CratesioResponse = reqwest::Client::builder()
-        .user_agent(format!("{}/{}", crate_name, user_agent))
+        .user_agent(user_agent)
         .build()
         .context("Couldn't build client")?
         .get(&url)
@@ -82,7 +82,7 @@ async fn get_version_list(crate_name: &str, user_agent: &str) -> Result<Vec<Vers
         crate_name = crate_name,
     );
     let response: CratesioResponse = reqwest::Client::builder()
-        .user_agent(format!("{}/{}", crate_name, user_agent))
+        .user_agent(user_agent)
         .build()
         .context("Couldn't build client")?
         .get(&url)

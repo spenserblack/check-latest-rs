@@ -4,6 +4,9 @@
 ### Changed
 - `Result` type to be from [`anyhow`](https://crates.io/crates/anyhow) crate
 
+### Fixed
+- Unnecessary formatting on `user_agent`
+
 ## [0.2.1] 2020/01/29
 ### Fixed
 - Some uses of `max_version!` macro failing to compile
