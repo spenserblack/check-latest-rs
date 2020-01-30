@@ -77,10 +77,7 @@ pub async fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions
 }
 
 async fn get_version_list(crate_name: &str, user_agent: &str) -> Result<Vec<Version>> {
-    let url = format!(
-        "https://crates.io/api/v1/crates/{crate_name}",
-        crate_name = crate_name,
-    );
+    let url = build_url(crate_name);
     let response: CratesioResponse = reqwest::Client::builder()
         .user_agent(user_agent)
         .build()
