@@ -44,6 +44,13 @@ struct VersionListItem {
     version: Version,
 }
 
+fn build_url(crate_name: &str) -> String {
+    format!(
+        "https://crates.io/api/v1/crates/{crate_name}",
+        crate_name = crate_name,
+    )
+}
+
 /// Check for version updates with asynchronous requests.
 #[cfg(feature = "async")]
 pub mod r#async;
