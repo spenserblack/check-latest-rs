@@ -1,6 +1,11 @@
 # Changelog
 
 ## [Unreleased](https://github.com/spenserblack/check-latest-rs/compare/v0.3.0...master)
+### Added
+- `Version`
+
+### Changed
+- `Versions` to contain list of `Version`s
 
 ## [0.3.0] 2020/01/30
 ### Changed

@@ -19,30 +19,39 @@
 //! default-features = false # If you want async, you probably don't want blocking
 //! features = ["async"]
 //! ```
-use semver::Version;
+use semver::Version as SemVersion;
 use serde::Deserialize;
-
-#[derive(Deserialize)]
-struct CratesioResponse {
-    #[serde(rename = "crate")]
-    versions: Versions,
-    #[serde(rename = "versions")]
-    all_versions: Vec<VersionListItem>,
-}
+use std::fmt::{self, Display};
+use time::OffsetDateTime;
 
 #[derive(Debug, Deserialize)]
 pub struct Versions {
-    /// The maximum version.
-    pub max_version: Version,
-    /// The newest version. Not necessarily the maximum version.
-    pub newest_version: Version,
+    versions: Vec<Version>,
 }
 
-#[derive(Deserialize)]
-struct VersionListItem {
+#[derive(Debug, Deserialize)]
+pub struct Version {
     #[serde(rename = "num")]
-    version: Version,
-    yanked: bool,
+    version: SemVersion,
+    pub yanked: bool,
+    pub created_at: OffsetDateTime,
+}
+
+impl Display for Version {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.version)?;
+        if self.yanked {
+            write!(f, " (yanked)")
+        } else {
+            Ok(())
+        }
+    }
+}
+
+impl From<Version> for SemVersion {
+    fn from(v: Version) -> SemVersion {
+        v.version
+    }
 }
 
 fn build_url(crate_name: &str) -> String {
@@ -54,11 +63,11 @@ fn build_url(crate_name: &str) -> String {
 
 /// Check for version updates with asynchronous requests.
 #[cfg(feature = "async")]
-pub mod r#async;
+// pub mod r#async;
 
 /// Check for version updates with blocking requests.
 #[cfg(feature = "blocking")]
-pub mod blocking;
+// pub mod blocking;
 
 #[doc(hidden)]
 #[macro_export]
