@@ -95,6 +95,7 @@ async fn get_version_list(crate_name: &str, user_agent: &str) -> Result<Vec<Vers
     let versions = response.all_versions;
     let versions = versions
         .into_iter()
+        .filter(|v| !v.yanked)
         .map(|v| v.version)
         .collect();
     Ok(versions)

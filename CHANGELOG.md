@@ -3,6 +3,7 @@
 ## [Unreleased](https://github.com/spenserblack/check-latest-rs/compare/v0.2.1...master)
 ### Changed
 - `Result` type to be from [`anyhow`](https://crates.io/crates/anyhow) crate
+- Max minor version and max patch to exclude yanked versions
 
 ### Fixed
 - Unnecessary formatting on `user_agent`

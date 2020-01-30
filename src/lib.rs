@@ -42,6 +42,7 @@ pub struct Versions {
 struct VersionListItem {
     #[serde(rename = "num")]
     version: Version,
+    yanked: bool,
 }
 
 fn build_url(crate_name: &str) -> String {
