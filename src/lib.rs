@@ -24,6 +24,7 @@ use serde::Deserialize;
 use std::fmt::{self, Display};
 use time::OffsetDateTime;
 
+/// A collection of `Version`s
 #[derive(Debug, Deserialize)]
 pub struct Versions {
     versions: Vec<Version>,
@@ -33,7 +34,9 @@ pub struct Versions {
 pub struct Version {
     #[serde(rename = "num")]
     version: SemVersion,
+    /// If this version was yanked
     pub yanked: bool,
+    /// When this version was published
     pub created_at: OffsetDateTime,
 }
 
