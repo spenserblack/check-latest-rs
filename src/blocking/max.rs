@@ -32,16 +32,13 @@ pub fn get_max_version(
     current_crate_version: &str,
     user_agent: &str,
 ) -> Result<Option<Version>> {
+    let versions = get_version_list(crate_name, user_agent)
+        .context("Couldn't get versions list")?;
     let current_version = Version::parse(current_crate_version)
         .context("Couldn't parse current version")?;
-    let max_version = get_versions(crate_name, user_agent)
-        .context("Couldn't get max version")?
-        .max_version;
-    let max_version = if current_version < max_version {
-        Some(max_version)
-    } else {
-        None
-    };
+    let max_version = versions
+        .into_iter()
+        .max()
     Ok(max_version)
 }
 
