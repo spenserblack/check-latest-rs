@@ -41,6 +41,24 @@ pub struct Version {
     pub created_at: OffsetDateTime,
 }
 
+impl Versions {
+    /// Gets *any* newest version.
+    ///
+    /// # Example
+    ///
+    /// ```rust,no_run
+    /// use check_latest::Versions;
+    ///
+    /// let newest = Versions::new("my-cool-crate", "my-cool-crate/1.0.0")
+    ///     .newest_version()
+    /// ```
+    pub fn newest_version(&self) -> Option<&Version> {
+        self.versions
+            .iter()
+            .max_by(|v1, v2| v1.created_at.cmp(&v2.created_at))
+    }
+}
+
 #[cfg(feature = "async")]
 impl Versions {
     /// - `crate_name`: The crate that the version should be checked for.
