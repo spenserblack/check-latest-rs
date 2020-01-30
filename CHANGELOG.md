@@ -1,6 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/spenserblack/check-latest-rs/compare/v0.2.1...master)
+## [Unreleased](https://github.com/spenserblack/check-latest-rs/compare/v0.3.0...master)
+
+## [0.3.0] 2020/01/30
 ### Changed
 - `Result` type to be from [`anyhow`](https://crates.io/crates/anyhow) crate
 - Max minor version and max patch to exclude yanked versions
@@ -27,5 +29,6 @@
 ## 0.1.0 2020/01/25
 ### Initial Version :tada:
 
+[0.3.0]: https://github.com/spenserblack/check-latest-rs/compare/v0.2.1...v0.3.0
 [0.2.1]: https://github.com/spenserblack/check-latest-rs/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/spenserblack/check-latest-rs/compare/v0.1.0...v0.2.0
