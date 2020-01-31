@@ -437,8 +437,8 @@ fn build_url(crate_name: &str) -> String {
 // pub mod r#async;
 
 /// Check for version updates with blocking requests.
-// #[cfg(feature = "blocking")]
-// pub mod blocking;
+#[cfg(feature = "blocking")]
+pub mod blocking;
 
 #[doc(hidden)]
 #[macro_export]
@@ -462,4 +462,26 @@ macro_rules! user_agent {
     () => {
         concat!($crate::crate_name!(), "/", $crate::crate_version!())
     };
+}
+
+#[derive(Deserialize)]
+struct CratesioResponse {
+    #[serde(rename = "crate")]
+    versions: MaxAndNew,
+    all_versions: Vec<VersionListItem>,
+}
+
+#[derive(Deserialize)]
+#[deprecated(since = "1")]
+/// Maintains compatibility with deprecated `fn`s.
+pub struct MaxAndNew {
+    max_version: SemVer,
+    newest_version: SemVer,
+}
+
+#[derive(Deserialize)]
+struct VersionListItem {
+    #[serde(rename = "num")]
+    version: SemVer,
+    yanked: bool,
 }

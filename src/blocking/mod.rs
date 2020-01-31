@@ -10,6 +10,8 @@
 
 use anyhow::{Context, Result};
 use crate::{build_url, CratesioResponse, Versions};
+#[allow(deprecated)]
+use crate::MaxAndNew;
 pub use max::*;
 pub use newest::*;
 use semver::Version;
@@ -56,7 +58,8 @@ use semver::Version;
 ///
 /// [Crates.io]: https://crates.io/
 #[deprecated(since = "1", note = "Please use Versions struct")]
-pub fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions> {
+#[allow(deprecated)]
+pub fn get_versions(crate_name: &str, user_agent: &str) -> Result<MaxAndNew> {
     let url = build_url(crate_name);
     let response: CratesioResponse = reqwest::blocking::Client::builder()
         .user_agent(user_agent)
