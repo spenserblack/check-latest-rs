@@ -38,6 +38,7 @@ pub struct Versions {
 ///
 /// [Crates.io]: https://crates.io/
 #[derive(Debug, Deserialize)]
+#[non_exhaustive]
 pub struct Version {
     #[serde(rename = "num")]
     version: SemVer,
