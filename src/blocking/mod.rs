@@ -9,7 +9,7 @@
 //! ```
 
 use anyhow::{Context, Result};
-use crate::{build_url, CratesioResponse, Versions};
+use crate::{build_url, CratesioResponse};
 #[allow(deprecated)]
 use crate::MaxAndNew;
 pub use max::*;

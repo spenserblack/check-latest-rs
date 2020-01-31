@@ -28,6 +28,7 @@ use semver::Version;
 ///
 /// [Crates.io]: https://crates.io/
 #[deprecated(since = "1", note = "Please use Versions struct")]
+#[allow(deprecated)]
 pub fn get_max_version(
     crate_name: &str,
     current_crate_version: &str,
