@@ -20,7 +20,7 @@
 //! features = ["async"]
 //! ```
 use anyhow::{Context, Result};
-use semver::Version as SemVersion;
+use semver::Version as SemVer;
 use serde::Deserialize;
 use std::fmt::{self, Display};
 use time::OffsetDateTime;
@@ -34,7 +34,7 @@ pub struct Versions {
 #[derive(Debug, Deserialize)]
 pub struct Version {
     #[serde(rename = "num")]
-    version: SemVersion,
+    version: SemVer,
     /// If this version was yanked
     pub yanked: bool,
     /// When this version was published
@@ -219,8 +219,8 @@ impl Display for Version {
     }
 }
 
-impl From<Version> for SemVersion {
-    fn from(v: Version) -> SemVersion {
+impl From<Version> for SemVer {
+    fn from(v: Version) -> SemVer {
         v.version
     }
 }
