@@ -34,10 +34,10 @@ pub struct Versions {
     versions: Vec<Version>,
 }
 
-#[derive(Debug, Deserialize)]
 /// A release to [Crates.io]
 ///
 /// [Crates.io]: https://crates.io/
+#[derive(Debug, Deserialize)]
 pub struct Version {
     #[serde(rename = "num")]
     version: SemVer,
