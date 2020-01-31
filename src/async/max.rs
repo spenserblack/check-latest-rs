@@ -29,6 +29,7 @@ use semver::Version;
 /// ```
 ///
 /// [Crates.io]: https://crates.io/
+#[deprecated(since = "1", note = "Please use Versions struct")]
 pub async fn get_max_version(
     crate_name: &str,
     current_crate_version: &str,
@@ -85,6 +86,7 @@ pub async fn get_max_version(
 /// ```
 ///
 /// [Crates.io]: https://crates.io/
+#[deprecated(since = "1", note = "Please use Versions struct")]
 pub async fn get_max_minor_version(
     crate_name: &str,
     version: &str,
@@ -141,6 +143,7 @@ pub async fn get_max_minor_version(
 /// ```
 ///
 /// [Crates.io]: https://crates.io/
+#[deprecated(since = "1", note = "Please use Versions struct")]
 pub async fn get_max_patch(
     crate_name: &str,
     version: &str,

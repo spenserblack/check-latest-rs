@@ -7,6 +7,18 @@
 ### Changed
 - `Versions` to contain list of `Version`s
 
+### Deprecated
+- `async::get_versions`
+- `async::get_max_version`
+- `async::get_max_minor_version`
+- `async::get_max_patch`
+- `async::get_newest_version`
+- `blocking::get_versions`
+- `blocking::get_max_version`
+- `blocking::get_max_minor_version`
+- `blocking::get_max_patch`
+- `blocking::get_newest_version`
+
 ## [0.3.0] 2020/01/30
 ### Changed
 - `Result` type to be from [`anyhow`](https://crates.io/crates/anyhow) crate

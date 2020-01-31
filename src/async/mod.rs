@@ -59,6 +59,7 @@ use semver::Version;
 /// ```
 ///
 /// [Crates.io]: https://crates.io/
+#[deprecated(since = "1", note = "Please use Versions struct")]
 pub async fn get_versions(crate_name: &str, user_agent: &str) -> Result<Versions> {
     let url = build_url(crate_name);
     let response: CratesioResponse = reqwest::Client::builder()
