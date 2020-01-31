@@ -92,6 +92,14 @@ impl Versions {
             .filter(|v| v.yanked)
             .max_by(|v1, v2| v1.created_at.cmp(&v2.created_at))
     }
+    /// Gets the full list of versions that were found.
+    pub fn versions(&self) -> &Vec<Version> {
+        &self.versions
+    }
+    /// Gets a mutable list of versions that were found.
+    pub fn versions_mut(&mut self) -> &mut Vec<Version> {
+        &mut self.versions
+    }
 }
 
 #[cfg(feature = "async")]
