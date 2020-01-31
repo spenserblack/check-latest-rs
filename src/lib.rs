@@ -50,6 +50,7 @@ impl Versions {
     /// use check_latest::Versions;
     ///
     /// let newest = Versions::new("my-cool-crate", "my-cool-crate/1.0.0")
+    ///     .unwrap()
     ///     .newest_version()
     /// ```
     pub fn newest_version(&self) -> Option<&Version> {
