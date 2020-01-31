@@ -58,7 +58,7 @@ impl Versions {
             .iter()
             .max_by(|v1, v2| v1.created_at.cmp(&v2.created_at))
     }
-    /// Gets the newest newest version that hasn't been yanked.
+    /// Gets the newest version that hasn't been yanked.
     ///
     /// # Example
     ///
