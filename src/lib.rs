@@ -58,6 +58,40 @@ impl Versions {
             .iter()
             .max_by(|v1, v2| v1.created_at.cmp(&v2.created_at))
     }
+    /// Gets the newest newest version that hasn't been yanked.
+    ///
+    /// # Example
+    ///
+    /// ```rust,no_run
+    /// use check_latest::Versions;
+    ///
+    /// let newest = Versions::new("my-cool-crate", "my-cool-crate/1.0.0")
+    ///     .unwrap()
+    ///     .newest_unyanked_version()
+    /// ```
+    pub fn newest_unyanked_version(&self) -> Option<&Version> {
+        self.versions
+            .iter()
+            .filter(|v| !v.yanked)
+            .max_by(|v1, v2| v1.created_at.cmp(&v2.created_at))
+    }
+    /// Gets newest version that has been yanked.
+    ///
+    /// # Example
+    ///
+    /// ```rust,no_run
+    /// use check_latest::Versions;
+    ///
+    /// let newest = Versions::new("my-cool-crate", "my-cool-crate/1.0.0")
+    ///     .unwrap()
+    ///     .newest_yanked_version()
+    /// ```
+    pub fn newest_yanked_version(&self) -> Option<&Version> {
+        self.versions
+            .iter()
+            .filter(|v| v.yanked)
+            .max_by(|v1, v2| v1.created_at.cmp(&v2.created_at))
+    }
 }
 
 #[cfg(feature = "async")]
