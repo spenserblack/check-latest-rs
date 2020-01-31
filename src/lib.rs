@@ -58,7 +58,7 @@ impl Versions {
     ///
     /// let newest = Versions::new("my-cool-crate", "my-cool-crate/1.0.0")
     ///     .unwrap()
-    ///     .max_version()
+    ///     .max_version();
     /// ```
     pub fn max_version(&self) -> Option<&Version> {
         self.versions
@@ -74,7 +74,7 @@ impl Versions {
     ///
     /// let newest = Versions::new("my-cool-crate", "my-cool-crate/1.0.0")
     ///     .unwrap()
-    ///     .max_unyanked_version()
+    ///     .max_unyanked_version();
     /// ```
     pub fn max_unyanked_version(&self) -> Option<&Version> {
         self.versions
@@ -91,7 +91,7 @@ impl Versions {
     ///
     /// let newest = Versions::new("my-cool-crate", "my-cool-crate/1.0.0")
     ///     .unwrap()
-    ///     .newest_yanked_version()
+    ///     .newest_yanked_version();
     /// ```
     pub fn max_yanked_version(&self) -> Option<&Version> {
         self.versions
@@ -110,7 +110,7 @@ impl Versions {
     ///
     /// let newest = Versions::new("my-cool-crate", "my-cool-crate/1.0.0")
     ///     .unwrap()
-    ///     .max_minor_version(1)
+    ///     .max_minor_version(1);
     /// ```
     pub fn max_minor_version(&self, major: u64) -> Option<&Version> {
         self.versions
@@ -130,7 +130,7 @@ impl Versions {
     ///
     /// let newest = Versions::new("my-cool-crate", "my-cool-crate/1.0.0")
     ///     .unwrap()
-    ///     .max_unyanked_minor_version(1)
+    ///     .max_unyanked_minor_version(1);
     /// ```
     pub fn max_unyanked_minor_version(&self, major: u64) -> Option<&Version> {
         self.versions
@@ -150,7 +150,7 @@ impl Versions {
     ///
     /// let newest = Versions::new("my-cool-crate", "my-cool-crate/1.0.0")
     ///     .unwrap()
-    ///     .max_yanked_minor_version(1)
+    ///     .max_yanked_minor_version(1);
     /// ```
     pub fn max_yanked_minor_version(&self, major: u64) -> Option<&Version> {
         self.versions
@@ -171,7 +171,7 @@ impl Versions {
     ///
     /// let newest = Versions::new("my-cool-crate", "my-cool-crate/1.0.0")
     ///     .unwrap()
-    ///     .max_patch(1, 2)
+    ///     .max_patch(1, 2);
     /// ```
     pub fn max_patch(&self, major: u64, minor: u64) -> Option<&Version> {
         self.versions
@@ -193,7 +193,7 @@ impl Versions {
     ///
     /// let newest = Versions::new("my-cool-crate", "my-cool-crate/1.0.0")
     ///     .unwrap()
-    ///     .max_unyanked_patch(1, 2)
+    ///     .max_unyanked_patch(1, 2);
     /// ```
     pub fn max_unyanked_patch(&self, major: u64, minor: u64) -> Option<&Version> {
         self.versions
@@ -216,7 +216,7 @@ impl Versions {
     ///
     /// let newest = Versions::new("my-cool-crate", "my-cool-crate/1.0.0")
     ///     .unwrap()
-    ///     .max_yanked_patch(1, 2)
+    ///     .max_yanked_patch(1, 2);
     /// ```
     pub fn max_yanked_patch(&self, major: u64, minor: u64) -> Option<&Version> {
         self.versions
@@ -235,7 +235,7 @@ impl Versions {
     ///
     /// let newest = Versions::new("my-cool-crate", "my-cool-crate/1.0.0")
     ///     .unwrap()
-    ///     .newest_version()
+    ///     .newest_version();
     /// ```
     pub fn newest_version(&self) -> Option<&Version> {
         self.versions
@@ -251,7 +251,7 @@ impl Versions {
     ///
     /// let newest = Versions::new("my-cool-crate", "my-cool-crate/1.0.0")
     ///     .unwrap()
-    ///     .newest_unyanked_version()
+    ///     .newest_unyanked_version();
     /// ```
     pub fn newest_unyanked_version(&self) -> Option<&Version> {
         self.versions
@@ -268,7 +268,7 @@ impl Versions {
     ///
     /// let newest = Versions::new("my-cool-crate", "my-cool-crate/1.0.0")
     ///     .unwrap()
-    ///     .newest_yanked_version()
+    ///     .newest_yanked_version();
     /// ```
     pub fn newest_yanked_version(&self) -> Option<&Version> {
         self.versions
