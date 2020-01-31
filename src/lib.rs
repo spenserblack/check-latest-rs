@@ -323,6 +323,7 @@ impl Versions {
     /// # }
     /// ```
     ///
+    /// [Crates.io]: https://crates.io/
     pub async fn async_new(crate_name: &str, user_agent: &str) -> Result<Versions> {
         let url = build_url(crate_name);
         let response: Versions = reqwest::Client::builder()
@@ -376,6 +377,7 @@ impl Versions {
     /// }
     /// ```
     ///
+    /// [Crates.io]: https://crates.io/
     pub fn new(crate_name: &str, user_agent: &str) -> Result<Versions> {
         let url = build_url(crate_name);
         let response: Versions = reqwest::blocking::Client::builder()
