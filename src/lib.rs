@@ -434,8 +434,8 @@ fn build_url(crate_name: &str) -> String {
 }
 
 /// Check for version updates with asynchronous requests.
-// #[cfg(feature = "async")]
-// pub mod r#async;
+#[cfg(feature = "async")]
+pub mod r#async;
 
 /// Check for version updates with blocking requests.
 #[cfg(feature = "blocking")]
