@@ -92,6 +92,66 @@ impl Versions {
             .filter(|v| v.yanked)
             .max_by(|v1, v2| v1.version.cmp(&v2.version))
     }
+    /// Gets *any* max version with the same major version.
+    ///
+    /// For example, if `major` = 1, then `1.0.0 <= max_minor_version < 2.0.0`.
+    ///
+    /// # Example
+    ///
+    /// ```rust,no_run
+    /// use check_latest::Versions;
+    ///
+    /// let newest = Versions::new("my-cool-crate", "my-cool-crate/1.0.0")
+    ///     .unwrap()
+    ///     .max_minor_version(1)
+    /// ```
+    pub fn max_minor_version(&self, major: u64) -> Option<&Version> {
+        self.versions
+            .iter()
+            .filter(|v| v.major == major)
+            .max_by(|v1, v2| v1.version.cmp(&v2.version))
+    }
+    /// Gets the max version that hasn't been yanked with the same major
+    /// version.
+    ///
+    /// For example, if `major` = 1, then `1.0.0 <= max_minor_version < 2.0.0`.
+    ///
+    /// # Example
+    ///
+    /// ```rust,no_run
+    /// use check_latest::Versions;
+    ///
+    /// let newest = Versions::new("my-cool-crate", "my-cool-crate/1.0.0")
+    ///     .unwrap()
+    ///     .max_unyanked_minor_version(1)
+    /// ```
+    pub fn max_unyanked_minor_version(&self, major: u64) -> Option<&Version> {
+        self.versions
+            .iter()
+            .filter(|v| !v.yanked)
+            .filter(|v| v.major == major)
+            .max_by(|v1, v2| v1.version.cmp(&v2.version))
+    }
+    /// Gets max version that has been yanked with the same major version.
+    ///
+    /// For example, if `major` = 1, then `1.0.0 <= max_minor_version < 2.0.0`.
+    ///
+    /// # Example
+    ///
+    /// ```rust,no_run
+    /// use check_latest::Versions;
+    ///
+    /// let newest = Versions::new("my-cool-crate", "my-cool-crate/1.0.0")
+    ///     .unwrap()
+    ///     .max_yanked_minor_version(1)
+    /// ```
+    pub fn max_yanked_minor_version(&self, major: u64) -> Option<&Version> {
+        self.versions
+            .iter()
+            .filter(|v| v.yanked)
+            .filter(|v| v.major == major)
+            .max_by(|v1, v2| v1.version.cmp(&v2.version))
+    }
     /// Gets *any* newest version.
     ///
     /// # Example
