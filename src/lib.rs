@@ -416,12 +416,18 @@ impl PartialEq<SemVer> for Version {
     }
 }
 
-impl PartialEq<&str> for Version {
-    fn eq(&self, rhs: &&str) -> bool {
-        match SemVer::parse(rhs.to_owned()) {
+impl PartialEq<str> for Version {
+    fn eq(&self, rhs: &str) -> bool {
+        match SemVer::parse(rhs) {
             Ok(version) => self.eq(&version),
             Err(_) => false,
         }
+    }
+}
+
+impl PartialEq<&str> for Version {
+    fn eq(&self, rhs: &&str) -> bool {
+        self.eq(rhs.to_owned())
     }
 }
 
@@ -431,12 +437,18 @@ impl PartialOrd<SemVer> for Version {
     }
 }
 
-impl PartialOrd<&str> for Version {
-    fn partial_cmp(&self, rhs: &&str) -> Option<Ordering> {
-        match SemVer::parse(rhs.to_owned()) {
+impl PartialOrd<str> for Version {
+    fn partial_cmp(&self, rhs: &str) -> Option<Ordering> {
+        match SemVer::parse(rhs) {
             Ok(version) => self.partial_cmp(&version),
             Err(_) => None,
         }
+    }
+}
+
+impl PartialOrd<&str> for Version {
+    fn partial_cmp(&self, rhs: &&str) -> Option<Ordering> {
+        self.partial_cmp(rhs.to_owned())
     }
 }
 
