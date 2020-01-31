@@ -19,6 +19,9 @@
 //! default-features = false # If you want async, you probably don't want blocking
 //! features = ["async"]
 //! ```
+
+#![deny(missing_docs)]
+
 use anyhow::{Context, Result};
 use semver::Version as SemVer;
 use serde::Deserialize;
@@ -32,6 +35,9 @@ pub struct Versions {
 }
 
 #[derive(Debug, Deserialize)]
+/// A release to [Crates.io]
+///
+/// [Crates.io]: https://crates.io/
 pub struct Version {
     #[serde(rename = "num")]
     version: SemVer,
