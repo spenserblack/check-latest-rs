@@ -108,7 +108,7 @@ impl Versions {
     pub fn max_minor_version(&self, major: u64) -> Option<&Version> {
         self.versions
             .iter()
-            .filter(|v| v.major == major)
+            .filter(|v| v.major() == major)
             .max_by(|v1, v2| v1.version.cmp(&v2.version))
     }
     /// Gets the max version that hasn't been yanked with the same major
@@ -129,7 +129,7 @@ impl Versions {
         self.versions
             .iter()
             .filter(|v| !v.yanked)
-            .filter(|v| v.major == major)
+            .filter(|v| v.major() == major)
             .max_by(|v1, v2| v1.version.cmp(&v2.version))
     }
     /// Gets max version that has been yanked with the same major version.
@@ -149,7 +149,7 @@ impl Versions {
         self.versions
             .iter()
             .filter(|v| v.yanked)
-            .filter(|v| v.major == major)
+            .filter(|v| v.major() == major)
             .max_by(|v1, v2| v1.version.cmp(&v2.version))
     }
     /// Gets *any* max version with the same major and minor version.
@@ -169,8 +169,8 @@ impl Versions {
     pub fn max_patch(&self, major: u64, minor: u64) -> Option<&Version> {
         self.versions
             .iter()
-            .filter(|v| v.major == major)
-            .filter(|v| v.minor == minor)
+            .filter(|v| v.major() == major)
+            .filter(|v| v.minor() == minor)
             .max_by(|v1, v2| v1.version.cmp(&v2.version))
     }
     /// Gets the max version that hasn't been yanked with the same major
@@ -192,8 +192,8 @@ impl Versions {
         self.versions
             .iter()
             .filter(|v| !v.yanked)
-            .filter(|v| v.major == major)
-            .filter(|v| v.minor == minor)
+            .filter(|v| v.major() == major)
+            .filter(|v| v.minor() == minor)
             .max_by(|v1, v2| v1.version.cmp(&v2.version))
     }
     /// Gets max version that has been yanked with the same major and minor
@@ -215,7 +215,8 @@ impl Versions {
         self.versions
             .iter()
             .filter(|v| v.yanked)
-            .filter(|v| v.major == major && v.minor == minor)
+            .filter(|v| v.major() == major)
+            .filter(|v| v.minor() == minor)
             .max_by(|v1, v2| v1.version.cmp(&v2.version))
     }
     /// Gets *any* newest version.
@@ -381,6 +382,21 @@ impl Versions {
             .json()
             .context("Couldn't read as JSON")?;
         Ok(response)
+    }
+}
+
+impl Version {
+    /// Gets the SemVer MAJOR version
+    pub fn major(&self) -> u64 {
+        self.version.major
+    }
+    /// Gets the SemVer MINOR version
+    pub fn minor(&self) -> u64 {
+        self.version.minor
+    }
+    /// Gets the SemVer PATCH version
+    pub fn patch(&self) -> u64 {
+        self.version.patch
     }
 }
 
