@@ -476,8 +476,30 @@ struct CratesioResponse {
 #[deprecated(since = "1")]
 /// Maintains compatibility with deprecated `fn`s.
 pub struct MaxAndNew {
-    max_version: SemVer,
-    newest_version: SemVer,
+    /// The max version according to the [Crates.io] API
+    ///
+    /// ```json
+    /// {
+    ///   "crate": {
+    ///     "max_version": "<version>"
+    ///   }
+    /// }
+    /// ```
+    ///
+    /// [Crates.io]: https://crates.io/
+    pub max_version: SemVer,
+    /// The newest version according to the [Crates.io] API
+    ///
+    /// ```json
+    /// {
+    ///   "crate": {
+    ///     "newest_version": "<version>"
+    ///   }
+    /// }
+    /// ```
+    ///
+    /// [Crates.io]: https://crates.io/
+    pub newest_version: SemVer,
 }
 
 #[derive(Deserialize)]
