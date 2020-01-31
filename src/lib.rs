@@ -25,6 +25,7 @@
 use anyhow::{Context, Result};
 use semver::Version as SemVer;
 use serde::Deserialize;
+use std::cmp::Ordering;
 use std::fmt::{self, Display};
 use time::OffsetDateTime;
 
@@ -409,6 +410,36 @@ impl Version {
     }
 }
 
+impl PartialEq<SemVer> for Version {
+    fn eq(&self, rhs: &SemVer) -> bool {
+        self.version.eq(&rhs)
+    }
+}
+
+impl PartialEq<&str> for Version {
+    fn eq(&self, rhs: &&str) -> bool {
+        match SemVer::parse(rhs.to_owned()) {
+            Ok(version) => self.eq(&version),
+            Err(_) => false,
+        }
+    }
+}
+
+impl PartialOrd<SemVer> for Version {
+    fn partial_cmp(&self, rhs: &SemVer) -> Option<Ordering> {
+        self.version.partial_cmp(rhs)
+    }
+}
+
+impl PartialOrd<&str> for Version {
+    fn partial_cmp(&self, rhs: &&str) -> Option<Ordering> {
+        match SemVer::parse(rhs.to_owned()) {
+            Ok(version) => self.partial_cmp(&version),
+            Err(_) => None,
+        }
+    }
+}
+
 impl Display for Version {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}", self.version)?;
@@ -507,4 +538,51 @@ struct VersionListItem {
     #[serde(rename = "num")]
     version: SemVer,
     yanked: bool,
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn is_greater_semver() {
+        let version = Version {
+            version: SemVer::parse("1.2.3").unwrap(),
+            yanked: false,
+            created_at: OffsetDateTime::from_unix_timestamp(0),
+        };
+        let semver = SemVer::parse("1.2.0").unwrap();
+        assert!(version > semver);
+    }
+
+    #[test]
+    fn is_lesser_semver() {
+        let version = Version {
+            version: SemVer::parse("1.2.3").unwrap(),
+            yanked: false,
+            created_at: OffsetDateTime::from_unix_timestamp(0),
+        };
+        let semver = SemVer::parse("1.3.0").unwrap();
+        assert!(version < semver);
+    }
+
+    #[test]
+    fn is_greater_str() {
+        let version = Version {
+            version: SemVer::parse("1.2.3").unwrap(),
+            yanked: false,
+            created_at: OffsetDateTime::from_unix_timestamp(0),
+        };
+        assert!(version > "1.2.0");
+    }
+
+    #[test]
+    fn is_lesser_str() {
+        let version = Version {
+            version: SemVer::parse("1.2.3").unwrap(),
+            yanked: false,
+            created_at: OffsetDateTime::from_unix_timestamp(0),
+        };
+        assert!(version < "1.3.0");
+    }
 }
