@@ -14,4 +14,3 @@ script:
   - cargo build --verbose --all-features
   - cargo test --verbose  --all-features
   - cargo build --verbose --no-default-features --features async
-  - cargo test --verbose --no-default-features --features async
