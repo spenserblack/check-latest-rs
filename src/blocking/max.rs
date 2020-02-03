@@ -2,8 +2,6 @@ use super::*;
 use anyhow::{Context, Result};
 use semver::Version;
 
-/// *__NOTE__ You probably want to use `max_version!`*
-///
 /// Compares the current crate version to the maximum version available on
 /// [Crates.io].
 ///
@@ -156,7 +154,15 @@ pub fn get_max_patch(
     Ok(max_patch)
 }
 
-/// Makes it easier to run `get_max_version`.
+/// Gets the max version of a crate.
+///
+/// # Returns
+///
+/// - `Ok(Some(version))` if there is a greater version
+/// - `Ok(None)` if there is no greater version
+/// - `Err(e)` if failure to search for greater version
+///
+/// # Usage
 ///
 /// `max_version!()` will predict the `crate_name`, `current_crate_version`, and
 /// `user_agent`.
@@ -250,7 +256,17 @@ macro_rules! max_version {
     };
     // All 3 specified {{{
     (crate_name = $crate_name:expr, version = $version:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::blocking::get_max_version($crate_name, $version, $user_agent)
+        $crate::Versions::new($crate_name, $user_agent)
+            .map(|v| {
+                v.max_unyanked_version()
+                    .and_then(|v| {
+                        if v > $version {
+                            None
+                        } else {
+                            Some($version)
+                        }
+                    })
+            })
     };
     (crate_name = $crate_name:expr, user_agent = $user_agent:expr, version = $version:expr $(,)?) => {
         $crate::max_version!(crate_name = $crate_name, version = $version, user_agent = $user_agent)
