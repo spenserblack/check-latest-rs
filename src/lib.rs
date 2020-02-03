@@ -714,6 +714,67 @@ pub mod r#async;
 #[cfg(feature = "blocking")]
 pub mod blocking;
 
+/// Helper for creating a new `Versions`
+///
+/// Will assume the correct `crate_name` and `user_agent` based on the contents
+/// of *your* `Cargo.toml`, but these values can be overridden.
+///
+/// # Examples
+///
+/// ## Basic Usage
+///
+/// ```rust,no_run
+/// use check_latest::crate_versions;
+///
+/// let versions = crate_versions!();
+/// ```
+///
+/// ## Overriding Default Values
+///
+/// *__NOTE__ Overriding both defaults is no different than just using
+/// `Versions::new`. You will probably want to override only one field, if any,
+/// if using this macro.
+///
+/// ```rust,no_run
+/// use check_latest::crate_versions;
+///
+/// let versions = crate_versions!(
+///     crate_name = "renamed-crate",
+///     user_agent = "my-user-agent",
+/// );
+/// ```
+#[cfg(feature = "blocking")]
+#[macro_export]
+macro_rules! crate_versions {
+    (crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
+        $crate::Versions::new($crate_name, $user_agent)
+    };
+    (user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
+        $crate::crate_versions!(
+            crate_name = $crate_name,
+            user_agent = $user_agent,
+        )
+    };
+    (crate_name = $crate_name:expr) => {
+        $crate::crate_versions!(
+            crate_name = $crate_name,
+            user_agent = $crate::user_agent!(),
+        )
+    };
+    (user_agent = $user_agent:expr) => {
+        $crate::crate_versions!(
+            crate_name = $crate::crate_name!(),
+            user_agent = $user_agent,
+        )
+    };
+    () => {
+        $crate::crate_versions!(
+            crate_name = $crate::crate_name!(),
+            user_agent = $crate::user_agent!(),
+        )
+    };
+}
+
 #[doc(hidden)]
 #[macro_export]
 macro_rules! crate_name {
