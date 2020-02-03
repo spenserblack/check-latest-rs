@@ -3,6 +3,8 @@
 ## [Unreleased](https://github.com/spenserblack/check-latest-rs/compare/v0.3.0...master)
 ### Added
 - `Version`
+- `check_max!`
+- `MaxAndNew` to support deprecated features
 
 ### Changed
 - `Versions` to contain list of `Version`s
