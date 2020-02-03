@@ -784,14 +784,23 @@ struct VersionListItem {
 
 #[cfg(test)]
 mod tests {
+    use chrono::NaiveDateTime;
+    use lazy_static::lazy_static;
     use super::*;
+
+    lazy_static! {
+        static ref DONT_CARE_DATETIME: DateTime<Utc> = {
+            let naive = NaiveDateTime::from_timestamp(0, 0);
+            DateTime::from_utc(naive, Utc)
+        };
+    }
 
     #[test]
     fn is_greater_semver() {
         let version = Version {
             version: SemVer::parse("1.2.3").unwrap(),
             yanked: false,
-            created_at: OffsetDateTime::from_unix_timestamp(0),
+            created_at: DONT_CARE_DATETIME.clone(),
         };
         let semver = SemVer::parse("1.2.0").unwrap();
         assert!(version > semver);
@@ -802,7 +811,7 @@ mod tests {
         let version = Version {
             version: SemVer::parse("1.2.3").unwrap(),
             yanked: false,
-            created_at: OffsetDateTime::from_unix_timestamp(0),
+            created_at: DONT_CARE_DATETIME.clone(),
         };
         let semver = SemVer::parse("1.3.0").unwrap();
         assert!(version < semver);
@@ -813,7 +822,7 @@ mod tests {
         let version = Version {
             version: SemVer::parse("1.2.3").unwrap(),
             yanked: false,
-            created_at: OffsetDateTime::from_unix_timestamp(0),
+            created_at: DONT_CARE_DATETIME.clone(),
         };
         assert!(version > "1.2.0");
     }
@@ -823,7 +832,7 @@ mod tests {
         let version = Version {
             version: SemVer::parse("1.2.3").unwrap(),
             yanked: false,
-            created_at: OffsetDateTime::from_unix_timestamp(0),
+            created_at: DONT_CARE_DATETIME.clone(),
         };
         assert!(version < "1.3.0");
     }
