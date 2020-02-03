@@ -257,15 +257,9 @@ macro_rules! max_version {
     // All 3 specified {{{
     (crate_name = $crate_name:expr, version = $version:expr, user_agent = $user_agent:expr $(,)?) => {
         $crate::Versions::new($crate_name, $user_agent)
-            .map(|v| {
-                v.max_unyanked_version()
-                    .and_then(|v| {
-                        if v > $version {
-                            None
-                        } else {
-                            Some($version)
-                        }
-                    })
+            .map(|ok_v| {
+                ok_v.max_unyanked_version_owned()
+                    .filter(|v| v > $version)
             })
     };
     (crate_name = $crate_name:expr, user_agent = $user_agent:expr, version = $version:expr $(,)?) => {
