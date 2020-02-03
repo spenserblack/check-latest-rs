@@ -906,7 +906,7 @@ struct CratesioResponse {
 }
 
 #[derive(Deserialize)]
-#[deprecated(since = "1")]
+#[deprecated(since = "0.4")]
 /// Maintains compatibility with deprecated `fn`s.
 pub struct MaxAndNew {
     /// The max version according to the [Crates.io] API

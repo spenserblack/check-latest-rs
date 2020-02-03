@@ -57,7 +57,7 @@ use semver::Version;
 /// ```
 ///
 /// [Crates.io]: https://crates.io/
-#[deprecated(since = "1", note = "Please use Versions struct")]
+#[deprecated(since = "0.4", note = "Please use Versions struct")]
 #[allow(deprecated)]
 pub fn get_versions(crate_name: &str, user_agent: &str) -> Result<MaxAndNew> {
     let url = build_url(crate_name);
@@ -173,7 +173,7 @@ fn get_version_list(crate_name: &str, user_agent: &str) -> Result<Vec<Version>> 
 /// }
 /// ```
 #[macro_export]
-#[deprecated(since = "1", note = "Please use Versions struct")]
+#[deprecated(since = "0.4", note = "Please use Versions struct")]
 macro_rules! versions {
     () => {
         $crate::versions!(

@@ -25,7 +25,7 @@ use semver::Version;
 /// ```
 ///
 /// [Crates.io]: https://crates.io/
-#[deprecated(since = "1", note = "Please use Versions struct")]
+#[deprecated(since = "0.4", note = "Please use Versions struct")]
 #[allow(deprecated)]
 pub fn get_max_version(
     crate_name: &str,
@@ -78,7 +78,7 @@ pub fn get_max_version(
 /// ```
 ///
 /// [Crates.io]: https://crates.io/
-#[deprecated(since = "1", note = "Please use Versions struct")]
+#[deprecated(since = "0.4", note = "Please use Versions struct")]
 pub fn get_max_minor_version(
     crate_name: &str,
     version: &str,
@@ -130,7 +130,7 @@ pub fn get_max_minor_version(
 /// ```
 ///
 /// [Crates.io]: https://crates.io/
-#[deprecated(since = "1", note = "Please use Versions struct")]
+#[deprecated(since = "0.4", note = "Please use Versions struct")]
 pub fn get_max_patch(
     crate_name: &str,
     version: &str,
@@ -242,7 +242,7 @@ pub fn get_max_patch(
 /// }
 /// ```
 #[macro_export]
-#[deprecated(since = "1")]
+#[deprecated(since = "0.4")]
 macro_rules! max_version {
     () => {
         $crate::max_version!(
@@ -409,7 +409,7 @@ macro_rules! max_version {
 /// }
 /// ```
 #[macro_export]
-#[deprecated(since = "1")]
+#[deprecated(since = "0.4")]
 macro_rules! max_minor_version {
     () => {
         $crate::max_minor_version!(
@@ -608,7 +608,7 @@ macro_rules! max_minor_version {
 /// }
 /// ```
 #[macro_export]
-#[deprecated(since = "1")]
+#[deprecated(since = "0.4")]
 macro_rules! max_patch {
     () => {
         $crate::max_patch!(

@@ -33,7 +33,7 @@ use semver::Version;
 /// ```
 ///
 /// [Crates.io]: https://crates.io/
-#[deprecated(since = "1", note = "Please use Versions struct")]
+#[deprecated(since = "0.4", note = "Please use Versions struct")]
 #[allow(deprecated)]
 pub async fn get_newest_version(
     crate_name: &str,
@@ -69,7 +69,7 @@ pub async fn get_newest_version(
 /// # }
 /// ```
 #[macro_export]
-#[deprecated(since = "1", note = "Please use Versions struct")]
+#[deprecated(since = "0.4", note = "Please use Versions struct")]
 macro_rules! newest_version_async {
     () => {
         $crate::newest_version_async!(
