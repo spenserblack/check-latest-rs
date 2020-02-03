@@ -364,8 +364,8 @@ impl Versions {
     /// use check_latest::Versions;
     ///
     /// let newest = Versions::new("my-cool-crate", "my-cool-crate/1.0.0")
-    ///     .unwrap_owned()
-    ///     .max_unyanked_minor_version_owned(1)
+    ///     .unwrap()
+    ///     .max_unyanked_minor_version_owned(1);
     /// ```
     pub fn max_unyanked_minor_version_owned(self,major: u64) -> Option<Version> {
         self.versions
