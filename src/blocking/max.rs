@@ -412,6 +412,7 @@ macro_rules! max_version {
 /// }
 /// ```
 #[macro_export]
+#[deprecated(since = "1"]
 macro_rules! max_minor_version {
     () => {
         $crate::max_minor_version!(
@@ -610,6 +611,7 @@ macro_rules! max_minor_version {
 /// }
 /// ```
 #[macro_export]
+#[deprecated(since = "1"]
 macro_rules! max_patch {
     () => {
         $crate::max_patch!(
