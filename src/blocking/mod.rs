@@ -201,5 +201,41 @@ macro_rules! versions {
     };
 }
 
+#[macro_export]
+/// Checks if there is a version available that is greater than the current
+/// version.
+///
+/// # Returns
+///
+/// Assume the current version is `a.b.c`, and the max available version is
+/// `x.y.z`.
+///
+/// - `Ok(Some(version))` if `x.y.z > a.b.c`
+/// - `Ok(None)` if `x.y.z <= a.b.c`
+/// - `Err(e)` if comparison could not be made
+///
+/// # Example
+///
+/// ```rust,no_run
+/// use check_latest::check_max;
+///
+/// if let Ok(Some(version)) = check_max!() {
+///     println!("A new version is available: {}", version);
+/// }
+/// ```
+macro_rules! check_max {
+    () => {
+        $crate::crate_versions!()
+            .map(|versions| {
+                let max = versions.max_unyanked_version_owned()?;
+                if max > $crate::crate_version!() {
+                    Some(max)
+                } else {
+                    None
+                }
+            })
+    }
+}
+
 mod max;
 mod newest;
