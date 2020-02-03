@@ -139,6 +139,7 @@ pub fn get_newest_version(
 /// }
 /// ```
 #[macro_export]
+#[deprecated(since = "1")]
 macro_rules! newest_version {
     () => {
         $crate::newest_version!(
