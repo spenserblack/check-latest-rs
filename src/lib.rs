@@ -775,58 +775,58 @@ macro_rules! crate_versions {
     };
 }
 
-#[macro_export]
 /// Gets the name of the crate as defined in *your* `Cargo.toml`
+#[macro_export]
 macro_rules! crate_name {
     () => {
         env!("CARGO_PKG_NAME")
     };
 }
 
-#[macro_export]
 /// Gets the version of the crate as defined in *your* `Cargo.toml`
 ///
 /// Will be `&str`
+#[macro_export]
 macro_rules! crate_version {
     () => {
         env!("CARGO_PKG_VERSION")
     };
 }
 
-#[macro_export]
 /// Gets the major version of the crate as defined in *your* `Cargo.toml`
 ///
 /// Will be `&str`
+#[macro_export]
 macro_rules! crate_major_version {
     () => {
         env!("CARGO_PKG_VERSION_MAJOR")
     };
 }
 
-#[macro_export]
 /// Gets the minor version of the crate as defined in *your* `Cargo.toml`
 ///
 /// Will be `&str`
+#[macro_export]
 macro_rules! crate_minor_version {
     () => {
         env!("CARGO_PKG_VERSION_MINOR")
     };
 }
 
-#[macro_export]
 /// Gets the patch version of the crate as defined in *your* `Cargo.toml`
 ///
 /// Will be `&str`
+#[macro_export]
 macro_rules! crate_patch {
     () => {
         env!("CARGO_PKG_VERSION_PATCH")
     };
 }
 
-#[macro_export]
 /// Defines an appropriate user agent for making requests
 ///
 /// `"<your-crate-name>/<version>"`
+#[macro_export]
 macro_rules! user_agent {
     () => {
         concat!($crate::crate_name!(), "/", $crate::crate_version!())
