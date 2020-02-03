@@ -180,6 +180,7 @@ pub async fn get_max_patch(
 /// # }
 /// ```
 #[macro_export]
+#[deprecated(since = "1")]
 macro_rules! max_version_async {
     () => {
         $crate::max_version_async!(
@@ -190,14 +191,7 @@ macro_rules! max_version_async {
     };
     // All 3 specified {{{
     (crate_name = $crate_name:expr, version = $version:expr, user_agent = $user_agent:expr $(,)?) => {
-        async {
-            $crate::Versions::async_new($crate_name, $user_agent)
-                .await
-                .map(|ok_v| {
-                    ok_v.max_unyanked_version_owned()
-                        .filter(|v| v > $version)
-                })
-        }
+        $crate::r#async::get_max_version($crate_name, $version, $user_agent)
     };
     (crate_name = $crate_name:expr, user_agent = $user_agent:expr, version = $version:expr $(,)?) => {
         $crate::max_version_async!(

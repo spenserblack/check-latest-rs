@@ -242,6 +242,7 @@ pub fn get_max_patch(
 /// }
 /// ```
 #[macro_export]
+#[deprecated(since = "1")]
 macro_rules! max_version {
     () => {
         $crate::max_version!(
@@ -252,11 +253,7 @@ macro_rules! max_version {
     };
     // All 3 specified {{{
     (crate_name = $crate_name:expr, version = $version:expr, user_agent = $user_agent:expr $(,)?) => {
-        $crate::Versions::new($crate_name, $user_agent)
-            .map(|ok_v| {
-                ok_v.max_unyanked_version_owned()
-                    .filter(|v| v > $version)
-            })
+        $crate::blocking::get_max_version($crate_name, $version, $user_agent)
     };
     (crate_name = $crate_name:expr, user_agent = $user_agent:expr, version = $version:expr $(,)?) => {
         $crate::max_version!(crate_name = $crate_name, version = $version, user_agent = $user_agent)
