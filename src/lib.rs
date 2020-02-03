@@ -790,6 +790,27 @@ macro_rules! crate_version {
 }
 
 #[macro_export]
+macro_rules! crate_major_version {
+    () => {
+        env!("CARGO_PKG_VERSION_MAJOR")
+    };
+}
+
+#[macro_export]
+macro_rules! crate_minor_version {
+    () => {
+        env!("CARGO_PKG_VERSION_MINOR")
+    };
+}
+
+#[macro_export]
+macro_rules! crate_patch {
+    () => {
+        env!("CARGO_PKG_VERSION_PATCH")
+    };
+}
+
+#[macro_export]
 macro_rules! user_agent {
     () => {
         concat!($crate::crate_name!(), "/", $crate::crate_version!())
