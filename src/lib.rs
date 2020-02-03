@@ -23,11 +23,11 @@
 #![deny(missing_docs)]
 
 use anyhow::{Context, Result};
+use chrono::{DateTime, Utc};
 use semver::Version as SemVer;
 use serde::Deserialize;
 use std::cmp::Ordering;
 use std::fmt::{self, Display};
-use time::OffsetDateTime;
 
 /// A collection of `Version`s
 #[derive(Debug, Deserialize)]
@@ -46,7 +46,7 @@ pub struct Version {
     /// If this version was yanked
     pub yanked: bool,
     /// When this version was published
-    pub created_at: OffsetDateTime,
+    pub created_at: DateTime<Utc>,
 }
 
 impl Versions {
