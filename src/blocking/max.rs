@@ -47,8 +47,6 @@ pub fn get_max_version(
 
 /// Gets the largest minor version available with the same major version.
 ///
-/// *__NOTE__ You probably want to use `max_minor_version!`*
-///
 /// - `crate_name`: The crate that the version should be checked for.
 /// - `version`: The version to be compared against.
 /// - `user_agent`: without a proper User-Agent, the request to the [Crates.io]
@@ -100,8 +98,6 @@ pub fn get_max_minor_version(
 }
 
 /// Gets the largest patch available with the same major and minor version.
-///
-/// *__NOTE__ You probably want to use `max_patch!`*
 ///
 /// - `crate_name`: The crate that the version should be checked for.
 /// - `version`: The version to be compared against.
