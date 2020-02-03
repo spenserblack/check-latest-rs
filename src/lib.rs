@@ -775,6 +775,71 @@ macro_rules! crate_versions {
     };
 }
 
+/// Helper for creating a new `Versions`
+///
+/// Will assume the correct `crate_name` and `user_agent` based on the contents
+/// of *your* `Cargo.toml`, but these values can be overridden.
+///
+/// # Examples
+///
+/// ## Basic Usage
+///
+/// ```rust,no_run
+/// # async fn run() {
+/// use check_latest::crate_versions_async;
+///
+/// let versions = crate_versions_async!().await;
+/// # }
+/// ```
+///
+/// ## Overriding Default Values
+///
+/// *__NOTE__ Overriding both defaults is no different than just using
+/// `Versions::new`. You will probably want to override only one field, if any,
+/// if using this macro.
+///
+/// ```rust,no_run
+/// # async fn run() {
+/// use check_latest::crate_versions_async;
+///
+/// let versions = crate_versions_async!(
+///     crate_name = "renamed-crate",
+///     user_agent = "my-user-agent",
+/// ).await;
+/// # }
+/// ```
+#[cfg(feature = "async")]
+#[macro_export]
+macro_rules! crate_versions_async {
+    (crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
+        $crate::Versions::async_new($crate_name, $user_agent)
+    };
+    (user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
+        $crate::crate_versions_async!(
+            crate_name = $crate_name,
+            user_agent = $user_agent,
+        )
+    };
+    (crate_name = $crate_name:expr) => {
+        $crate::crate_versions_async!(
+            crate_name = $crate_name,
+            user_agent = $crate::user_agent!(),
+        )
+    };
+    (user_agent = $user_agent:expr) => {
+        $crate::crate_versions_async!(
+            crate_name = $crate::crate_name!(),
+            user_agent = $user_agent,
+        )
+    };
+    () => {
+        $crate::crate_versions_async!(
+            crate_name = $crate::crate_name!(),
+            user_agent = $crate::user_agent!(),
+        )
+    };
+}
+
 /// Gets the name of the crate as defined in *your* `Cargo.toml`
 #[macro_export]
 macro_rules! crate_name {
