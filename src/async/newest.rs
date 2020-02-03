@@ -69,6 +69,7 @@ pub async fn get_newest_version(
 /// # }
 /// ```
 #[macro_export]
+#[deprecated(since = "1", note = "Please use Versions struct")]
 macro_rules! newest_version_async {
     () => {
         $crate::newest_version_async!(

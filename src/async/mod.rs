@@ -122,6 +122,7 @@ async fn get_version_list(crate_name: &str, user_agent: &str) -> Result<Vec<Vers
 /// # }
 /// ```
 #[macro_export]
+#[deprecated(since = "1")]
 macro_rules! versions_async {
     () => {
         $crate::versions_async!(
