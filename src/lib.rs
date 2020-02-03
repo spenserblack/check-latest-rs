@@ -775,7 +775,6 @@ macro_rules! crate_versions {
     };
 }
 
-#[doc(hidden)]
 #[macro_export]
 macro_rules! crate_name {
     () => {
@@ -783,7 +782,6 @@ macro_rules! crate_name {
     };
 }
 
-#[doc(hidden)]
 #[macro_export]
 macro_rules! crate_version {
     () => {
@@ -791,7 +789,6 @@ macro_rules! crate_version {
     };
 }
 
-#[doc(hidden)]
 #[macro_export]
 macro_rules! user_agent {
     () => {
