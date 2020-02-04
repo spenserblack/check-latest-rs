@@ -201,7 +201,6 @@ macro_rules! versions {
     };
 }
 
-#[macro_export]
 /// Checks if there is a version available that is greater than the current
 /// version.
 ///
@@ -223,6 +222,7 @@ macro_rules! versions {
 ///     println!("A new version is available: {}", version);
 /// }
 /// ```
+#[macro_export]
 macro_rules! check_max {
     () => {
         $crate::crate_versions!()
