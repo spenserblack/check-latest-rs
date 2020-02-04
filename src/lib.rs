@@ -733,7 +733,7 @@ pub mod blocking;
 ///
 /// *__NOTE__ Overriding both defaults is no different than just using
 /// `Versions::new`. You will probably want to override only one field, if any,
-/// if using this macro.
+/// if using this macro.*
 ///
 /// ```rust,no_run
 /// use check_latest::crate_versions;
