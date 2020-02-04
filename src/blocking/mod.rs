@@ -227,7 +227,8 @@ macro_rules! check_max {
     ($version:expr) => {
         $crate::crate_versions!()
             .map(|versions| {
-                let max = versions.max_unyanked_version_owned()?;
+                let max = versions.max_unyanked_version()?
+                    .clone();
                 if max > $version {
                     Some(max)
                 } else {
@@ -264,17 +265,11 @@ macro_rules! check_minor {
         $crate::crate_versions!()
             .and_then(|versions| {
                 let major_version = $crate::crate_major_version!().parse()?;
-                let max = versions.max_unyanked_minor_version_owned(major_version);
+                let max = versions.max_unyanked_minor_version(major_version);
+                let max = max.cloned();
+                let max = max.filter(|max| max > $version);
                 Ok(max)
             })
-            .map(|max| {
-                let max = max?;
-                if max > $version {
-                    Some(max)
-                } else {
-                    None
-                }
-            });
     };
     () => ($crate::check_minor!($crate::crate_version!()));
 }
