@@ -236,6 +236,46 @@ macro_rules! check_max {
             })
     }
 }
+/// Checks if there is a version available that is greater than the current
+/// version, within the same major version.
+///
+/// # Returns
+///
+/// Assume the current version is `a.b.c`, and the max available version is
+/// `a.y.z`.
+///
+/// - `Ok(Some(version))` if `a.y.z > a.b.c`
+/// - `Ok(None)` if `a.y.z <= a.b.c`
+/// - `Err(e)` if comparison could not be made
+///
+/// # Example
+///
+/// ```rust,no_run
+/// use check_latest::check_minor;
+///
+/// if let Ok(Some(version)) = check_minor!() {
+///     println!("A new version is available: {}", version);
+/// }
+/// ```
+#[macro_export]
+macro_rules! check_minor {
+    () => {
+        $crate::crate_versions!()
+            .and_then(|versions| {
+                let major_version = $crate::crate_major_version!().parse()?;
+                let max = versions.max_unyanked_minor_version_owned(major_version);
+                Ok(max)
+            })
+            .map(|max| {
+                let max = max?;
+                if max > $crate::crate_version!() {
+                    Some(max)
+                } else {
+                    None
+                }
+            });
+    }
+}
 
 mod max;
 mod newest;
