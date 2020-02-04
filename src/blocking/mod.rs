@@ -224,17 +224,18 @@ macro_rules! versions {
 /// ```
 #[macro_export]
 macro_rules! check_max {
-    () => {
+    ($version:expr) => {
         $crate::crate_versions!()
             .map(|versions| {
                 let max = versions.max_unyanked_version_owned()?;
-                if max > $crate::crate_version!() {
+                if max > $version {
                     Some(max)
                 } else {
                     None
                 }
             })
-    }
+    };
+    () => ($crate::check_max!($crate::crate_version!()));
 }
 /// Checks if there is a version available that is greater than the current
 /// version, within the same major version.
@@ -259,7 +260,7 @@ macro_rules! check_max {
 /// ```
 #[macro_export]
 macro_rules! check_minor {
-    () => {
+    ($version:expr) => {
         $crate::crate_versions!()
             .and_then(|versions| {
                 let major_version = $crate::crate_major_version!().parse()?;
@@ -268,13 +269,14 @@ macro_rules! check_minor {
             })
             .map(|max| {
                 let max = max?;
-                if max > $crate::crate_version!() {
+                if max > $version {
                     Some(max)
                 } else {
                     None
                 }
             });
-    }
+    };
+    () => ($crate::check_minor!($crate::crate_version!()));
 }
 
 mod max;
