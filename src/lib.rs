@@ -28,13 +28,13 @@ use serde::Deserialize;
 use std::cmp::Ordering;
 use std::fmt::{self, Display};
 
-/// A collection of `Version`s
+/// A collection of `Version`s.
 #[derive(Debug, Deserialize)]
 pub struct Versions {
     versions: Vec<Version>,
 }
 
-/// A release to [Crates.io]
+/// A release to [Crates.io].
 ///
 /// [Crates.io]: https://crates.io/
 #[derive(Clone, Debug, Deserialize)]
@@ -379,7 +379,7 @@ pub mod r#async;
 #[cfg(feature = "blocking")]
 pub mod blocking;
 
-/// Gets the name of the crate as defined in *your* `Cargo.toml`
+/// Gets the name of the crate as defined in *your* `Cargo.toml`.
 #[macro_export]
 macro_rules! crate_name {
     () => {
@@ -387,7 +387,7 @@ macro_rules! crate_name {
     };
 }
 
-/// Gets the version of the crate as defined in *your* `Cargo.toml`
+/// Gets the version of the crate as defined in *your* `Cargo.toml`.
 ///
 /// Will be `&str`
 #[macro_export]
@@ -397,7 +397,7 @@ macro_rules! crate_version {
     };
 }
 
-/// Gets the major version of the crate as defined in *your* `Cargo.toml`
+/// Gets the major version of the crate as defined in *your* `Cargo.toml`.
 ///
 /// Will be `&str`
 #[macro_export]
@@ -407,7 +407,7 @@ macro_rules! crate_major_version {
     };
 }
 
-/// Gets the minor version of the crate as defined in *your* `Cargo.toml`
+/// Gets the minor version of the crate as defined in *your* `Cargo.toml`.
 ///
 /// Will be `&str`
 #[macro_export]
@@ -417,7 +417,7 @@ macro_rules! crate_minor_version {
     };
 }
 
-/// Gets the patch version of the crate as defined in *your* `Cargo.toml`
+/// Gets the patch version of the crate as defined in *your* `Cargo.toml`.
 ///
 /// Will be `&str`
 #[macro_export]
@@ -427,7 +427,7 @@ macro_rules! crate_patch {
     };
 }
 
-/// Defines an appropriate user agent for making requests
+/// Defines an appropriate user agent for making requests.
 ///
 /// `"<your-crate-name>/<version>"`
 #[macro_export]

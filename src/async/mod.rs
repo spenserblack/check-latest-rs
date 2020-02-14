@@ -324,7 +324,7 @@ impl Versions {
     }
 }
 
-/// Helper for creating a new `Versions`
+/// Helper for creating a new `Versions`.
 ///
 /// Will assume the correct `crate_name` and `user_agent` based on the contents
 /// of *your* `Cargo.toml`, but these values can be overridden.
