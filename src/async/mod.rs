@@ -174,7 +174,7 @@ macro_rules! versions_async {
 macro_rules! check_max_async {
     () => {
         async {
-            $crate::crate_versions_async!()
+            $crate::new_versions_async!()
                 .await
                 .map(|versions| {
                     let max = versions.max_unyanked_version()?
@@ -215,7 +215,7 @@ macro_rules! check_max_async {
 macro_rules! check_minor_async {
     () => {
         async {
-            $crate::crate_versions_async!()
+            $crate::new_versions_async!()
                 .await
                 .and_then(|versions| {
                     let major_version = $crate::crate_major_version!().parse()?;
@@ -255,7 +255,7 @@ macro_rules! check_minor_async {
 macro_rules! check_patch_async {
     () => {
         async {
-            $crate::crate_versions_async!()
+            $crate::new_versions_async!()
                 .await
                 .and_then(|versions| {
                     let major_version = $crate::crate_major_version!().parse()?;
@@ -335,9 +335,9 @@ impl Versions {
 ///
 /// ```rust,no_run
 /// # async fn run() {
-/// use check_latest::crate_versions_async;
+/// use check_latest::new_versions_async;
 ///
-/// let versions = crate_versions_async!().await;
+/// let versions = new_versions_async!().await;
 /// # }
 /// ```
 ///
@@ -349,39 +349,39 @@ impl Versions {
 ///
 /// ```rust,no_run
 /// # async fn run() {
-/// use check_latest::crate_versions_async;
+/// use check_latest::new_versions_async;
 ///
-/// let versions = crate_versions_async!(
+/// let versions = new_versions_async!(
 ///     crate_name = "renamed-crate",
 ///     user_agent = "my-user-agent",
 /// ).await;
 /// # }
 /// ```
 #[macro_export]
-macro_rules! crate_versions_async {
+macro_rules! new_versions_async {
     (crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
         $crate::Versions::async_new($crate_name, $user_agent)
     };
     (user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::crate_versions_async!(
+        $crate::new_versions_async!(
             crate_name = $crate_name,
             user_agent = $user_agent,
         )
     };
     (crate_name = $crate_name:expr) => {
-        $crate::crate_versions_async!(
+        $crate::new_versions_async!(
             crate_name = $crate_name,
             user_agent = $crate::user_agent!(),
         )
     };
     (user_agent = $user_agent:expr) => {
-        $crate::crate_versions_async!(
+        $crate::new_versions_async!(
             crate_name = $crate::crate_name!(),
             user_agent = $user_agent,
         )
     };
     () => {
-        $crate::crate_versions_async!(
+        $crate::new_versions_async!(
             crate_name = $crate::crate_name!(),
             user_agent = $crate::user_agent!(),
         )

@@ -225,7 +225,7 @@ macro_rules! versions {
 #[macro_export]
 macro_rules! check_max {
     () => {
-        $crate::crate_versions!()
+        $crate::new_versions!()
             .map(|versions| {
                 let max = versions.max_unyanked_version()?
                     .clone();
@@ -261,7 +261,7 @@ macro_rules! check_max {
 #[macro_export]
 macro_rules! check_minor {
     () => {
-        $crate::crate_versions!()
+        $crate::new_versions!()
             .and_then(|versions| {
                 let major_version = $crate::crate_major_version!().parse()?;
                 let max = versions.max_unyanked_minor_version(major_version);
@@ -296,7 +296,7 @@ macro_rules! check_minor {
 #[macro_export]
 macro_rules! check_patch {
     () => {
-        $crate::crate_versions!()
+        $crate::new_versions!()
             .and_then(|versions| {
                 let major_version = $crate::crate_major_version!().parse()?;
                 let minor_version = $crate::crate_minor_version!().parse()?;
@@ -369,9 +369,9 @@ impl Versions {
 /// ## Basic Usage
 ///
 /// ```rust,no_run
-/// use check_latest::crate_versions;
+/// use check_latest::new_versions;
 ///
-/// let versions = crate_versions!();
+/// let versions = new_versions!();
 /// ```
 ///
 /// ## Overriding Default Values
@@ -381,38 +381,38 @@ impl Versions {
 /// if using this macro.*
 ///
 /// ```rust,no_run
-/// use check_latest::crate_versions;
+/// use check_latest::new_versions;
 ///
-/// let versions = crate_versions!(
+/// let versions = new_versions!(
 ///     crate_name = "renamed-crate",
 ///     user_agent = "my-user-agent",
 /// );
 /// ```
 #[macro_export]
-macro_rules! crate_versions {
+macro_rules! new_versions {
     (crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
         $crate::Versions::new($crate_name, $user_agent)
     };
     (user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::crate_versions!(
+        $crate::new_versions!(
             crate_name = $crate_name,
             user_agent = $user_agent,
         )
     };
     (crate_name = $crate_name:expr) => {
-        $crate::crate_versions!(
+        $crate::new_versions!(
             crate_name = $crate_name,
             user_agent = $crate::user_agent!(),
         )
     };
     (user_agent = $user_agent:expr) => {
-        $crate::crate_versions!(
+        $crate::new_versions!(
             crate_name = $crate::crate_name!(),
             user_agent = $user_agent,
         )
     };
     () => {
-        $crate::crate_versions!(
+        $crate::new_versions!(
             crate_name = $crate::crate_name!(),
             user_agent = $crate::user_agent!(),
         )
