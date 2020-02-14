@@ -1,5 +1,3 @@
-use check_latest::max_version_async;
-
 #[tokio::main]
 async fn main() {
     if let Ok(Some(version)) = check_latest::check_max_async!().await {
