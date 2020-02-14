@@ -16,7 +16,7 @@ if let Ok(Some(version)) = check_max!() {
 }
 ```
 
-*Please check [the documentation](https://docs.rs/check-latest/) For more usage.*
+*Please check the examples and [the documentation](https://docs.rs/check-latest/) For more usage.*
 
 # Features
 This crate has two features: `async` and `blocking`.
