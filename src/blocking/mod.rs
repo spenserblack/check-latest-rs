@@ -260,17 +260,16 @@ macro_rules! check_max {
 /// ```
 #[macro_export]
 macro_rules! check_minor {
-    ($version:expr) => {
+    () => {
         $crate::crate_versions!()
             .and_then(|versions| {
                 let major_version = $crate::crate_major_version!().parse()?;
                 let max = versions.max_unyanked_minor_version(major_version);
                 let max = max.cloned();
-                let max = max.filter(|max| max > $version);
+                let max = max.filter(|max| max > $crate::crate_version!());
                 Ok(max)
             })
     };
-    () => ($crate::check_minor!($crate::crate_version!()));
 }
 
 /// Checks if there is a higher patch available, within the same major.minor
@@ -296,19 +295,17 @@ macro_rules! check_minor {
 /// ```
 #[macro_export]
 macro_rules! check_patch {
-    ($version:expr) => {
+    () => {
         $crate::crate_versions!()
             .and_then(|versions| {
                 let major_version = $crate::crate_major_version!().parse()?;
                 let minor_version = $crate::crate_minor_version!().parse()?;
-                println!("crate: {}.{}", major_version, minor_version); // TODO Remove
                 let max = versions.max_unyanked_patch(major_version, minor_version);
                 let max = max.cloned();
-                let max = max.filter(|max| max > $version);
+                let max = max.filter(|max| max > $crate::crate_version!());
                 Ok(max)
             })
     };
-    () => ($crate::check_patch!($crate::crate_version!()));
 }
 
 mod max;
