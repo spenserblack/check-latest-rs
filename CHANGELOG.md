@@ -4,6 +4,13 @@
 ### Added
 - `Version`
 - `check_max!`
+- `check_minor!`
+- `check_patch!`
+- `check_max_async!`
+- `check_minor_async!`
+- `check_patch_async!`
+- `new_versions!`
+- `new_versions_async!`
 - `MaxAndNew` to support deprecated features
 
 ### Changed
@@ -20,6 +27,12 @@
 - `blocking::get_max_minor_version`
 - `blocking::get_max_patch`
 - `blocking::get_newest_version`
+- `max_version!`
+- `max_minor_version!`
+- `max_patch!`;
+- `max_version_async!`
+- `max_minor_version_async!`
+- `max_patch_async!`;
 
 ## [0.3.0] 2020/01/30
 ### Changed
