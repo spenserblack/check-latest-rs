@@ -22,7 +22,6 @@
 
 #![deny(missing_docs)]
 
-use anyhow::{Context, Result};
 use chrono::{DateTime, Utc};
 use semver::Version as SemVer;
 use serde::Deserialize;
