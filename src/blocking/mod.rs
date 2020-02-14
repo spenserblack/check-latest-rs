@@ -206,11 +206,11 @@ macro_rules! versions {
 ///
 /// # Returns
 ///
-/// Assume the current version is `a.b.c`, and the max available version is
-/// `x.y.z`.
+/// Assume the current version is `a.b.c`, and we are looking at versions that
+/// are `x.y.z`.
 ///
-/// - `Ok(Some(version))` if `x.y.z > a.b.c`
-/// - `Ok(None)` if `x.y.z <= a.b.c`
+/// - `Ok(Some(version))` if `x.y.z > a.b.c` where `version = max x.y.z`
+/// - `Ok(None)` if no version meets the rule `x.y.z > a.b.c`
 /// - `Err(e)` if comparison could not be made
 ///
 /// # Example
@@ -237,16 +237,16 @@ macro_rules! check_max {
             })
     };
 }
-/// Checks if there is a version available that is greater than the current
-/// version, within the same major version.
+/// Checks if there is a higher minor version available with the same major
+/// version
 ///
 /// # Returns
 ///
-/// Assume the current version is `a.b.c`, and the max available version is
-/// `a.y.z`.
+/// Assume the current version is `a.b.c`, and we are looking at versions that
+/// are `a.y.z`.
 ///
-/// - `Ok(Some(version))` if `a.y.z > a.b.c`
-/// - `Ok(None)` if `a.y.z <= a.b.c`
+/// - `Ok(Some(version))` if `a.y.z > a.b.c` where `version =  max a.b.z`
+/// - `Ok(None)` if no version meets the rule `a.y.z > a.b.c`
 /// - `Err(e)` if comparison could not be made
 ///
 /// # Example
@@ -281,7 +281,7 @@ macro_rules! check_minor {
 /// are `a.b.z`.
 ///
 /// - `Ok(Some(version))` if `a.b.z > a.b.c`, where `version = max a.b.z`
-/// - `Ok(None)` if no versions meet the rule `a.b.z > a.b.c`
+/// - `Ok(None)` if no version meets the rule `a.b.z > a.b.c`
 /// - `Err(e)` if comparison could not be made
 ///
 /// # Example
