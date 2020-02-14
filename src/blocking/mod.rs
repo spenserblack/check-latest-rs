@@ -274,5 +274,43 @@ macro_rules! check_minor {
     () => ($crate::check_minor!($crate::crate_version!()));
 }
 
+/// Checks if there is a higher patch available, within the same major.minor
+/// version.
+///
+/// # Returns
+///
+/// Assume the current version is `a.b.c`, and we are looking at versions that
+/// are `a.b.z`.
+///
+/// - `Ok(Some(version))` if `a.b.z > a.b.c`, where `version = max a.b.z`
+/// - `Ok(None)` if no versions meet the rule `a.b.z > a.b.c`
+/// - `Err(e)` if comparison could not be made
+///
+/// # Example
+///
+/// ```rust,no_run
+/// use check_latest::check_patch;
+///
+/// if let Ok(Some(version)) = check_patch!() {
+///     println!("We've implemented one or more bug fixes in {}", version);
+/// }
+/// ```
+#[macro_export]
+macro_rules! check_patch {
+    ($version:expr) => {
+        $crate::crate_versions!()
+            .and_then(|versions| {
+                let major_version = $crate::crate_major_version!().parse()?;
+                let minor_version = $crate::crate_minor_version!().parse()?;
+                println!("crate: {}.{}", major_version, minor_version); // TODO Remove
+                let max = versions.max_unyanked_patch(major_version, minor_version);
+                let max = max.cloned();
+                let max = max.filter(|max| max > $version);
+                Ok(max)
+            })
+    };
+    () => ($crate::check_patch!($crate::crate_version!()));
+}
+
 mod max;
 mod newest;

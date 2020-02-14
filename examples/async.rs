@@ -14,4 +14,7 @@ async fn main() {
     if let Ok(Some(version)) = check_latest::check_minor_async!(&semver_version).await {
         println!("A new minor version has been released: {}", version);
     }
+    if let Ok(Some(version)) = check_latest::check_patch_async!("0.2.0").await {
+        println!("A new patch has been released: {}", version);
+    }
 }

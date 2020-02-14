@@ -11,4 +11,7 @@ fn main() {
     if let Ok(Some(version)) = check_latest::check_minor!(&semver_version) {
         println!("A new minor version has been released: {}", version);
     }
+    if let Ok(Some(version)) = check_latest::check_patch!("0.2.0") {
+        println!("A new patch has been released: {}", version);
+    }
 }
