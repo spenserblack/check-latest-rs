@@ -1,6 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/spenserblack/check-latest-rs/compare/v0.3.0...master)
+## [Unreleased](https://github.com/spenserblack/check-latest-rs/compare/v0.4.0...master)
+
+## [0.4.0] 2020/02/14
 ### Added
 - `Version`
 - `check_max!`
@@ -29,10 +31,10 @@
 - `blocking::get_newest_version`
 - `max_version!`
 - `max_minor_version!`
-- `max_patch!`;
+- `max_patch!`
 - `max_version_async!`
 - `max_minor_version_async!`
-- `max_patch_async!`;
+- `max_patch_async!`
 
 ## [0.3.0] 2020/01/30
 ### Changed
@@ -61,6 +63,7 @@
 ## 0.1.0 2020/01/25
 ### Initial Version :tada:
 
+[0.4.0]: https://github.com/spenserblack/check-latest-rs/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/spenserblack/check-latest-rs/compare/v0.2.1...v0.3.0
 [0.2.1]: https://github.com/spenserblack/check-latest-rs/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/spenserblack/check-latest-rs/compare/v0.1.0...v0.2.0
