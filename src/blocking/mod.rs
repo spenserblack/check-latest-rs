@@ -224,19 +224,18 @@ macro_rules! versions {
 /// ```
 #[macro_export]
 macro_rules! check_max {
-    ($version:expr) => {
+    () => {
         $crate::crate_versions!()
             .map(|versions| {
                 let max = versions.max_unyanked_version()?
                     .clone();
-                if max > $version {
+                if max > $crate::crate_version!() {
                     Some(max)
                 } else {
                     None
                 }
             })
     };
-    () => ($crate::check_max!($crate::crate_version!()));
 }
 /// Checks if there is a version available that is greater than the current
 /// version, within the same major version.
