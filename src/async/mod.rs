@@ -11,7 +11,7 @@
 //! ```
 
 use anyhow::{Context, Result};
-use crate::{build_url, CratesioResponse};
+use crate::{build_url, CratesioResponse, Versions};
 #[allow(deprecated)]
 use crate::MaxAndNew;
 pub use max::*;
@@ -266,6 +266,125 @@ macro_rules! check_patch_async {
                     Ok(max)
                 })
         }
+    };
+}
+
+impl Versions {
+    /// - `crate_name`: The crate that the version should be checked for.
+    /// - `user_agent`: without a proper User-Agent, the request to the
+    ///   [Crates.io] API will result in the response below, which we won't
+    ///   be able to parse into crate versions.
+    ///
+    /// # Example Response from Bad User Agent
+    ///
+    /// ```text
+    /// We require that all requests include a `User-Agent` header.  To allow us to determine the impact your bot has on our service, we ask that your user agent actually identify your bot, and not just report the HTTP client library you're using.  Including contact information will also reduce the chance that we will need to take action against your bot.
+    ///
+    /// Bad:
+    ///   User-Agent: <bad user agent that you used>
+    ///
+    /// Better:
+    ///   User-Agent: my_crawler
+    ///
+    /// Best:
+    ///   User-Agent: my_crawler (my_crawler.com/info)
+    ///   User-Agent: my_crawler (help@my_crawler.com)
+    ///
+    /// If you believe you've received this message in error, please email help@crates.io and include the request id {}.
+    /// ```
+    ///
+    ///
+    /// # Example
+    ///
+    /// ```rust,no_run
+    /// # async fn run() {
+    /// use check_latest::Versions;
+    ///
+    /// if let Ok(versions) = Versions::async_new("my-awesome-crate-bin", "my-awesome-crate-bin/1.0.0").await {
+    ///     /* Do your stuff */
+    /// }
+    /// # }
+    /// ```
+    ///
+    /// [Crates.io]: https://crates.io/
+    pub async fn async_new(crate_name: &str, user_agent: &str) -> Result<Versions> {
+        let url = build_url(crate_name);
+        let response: Versions = reqwest::Client::builder()
+            .user_agent(user_agent)
+            .build()
+            .context("Couldn't build client")?
+            .get(&url)
+            .send()
+            .await
+            .context("Couldn't request crate info")?
+            .json()
+            .await
+            .context("Couldn't read as JSON")?;
+        Ok(response)
+    }
+}
+
+/// Helper for creating a new `Versions`
+///
+/// Will assume the correct `crate_name` and `user_agent` based on the contents
+/// of *your* `Cargo.toml`, but these values can be overridden.
+///
+/// # Examples
+///
+/// ## Basic Usage
+///
+/// ```rust,no_run
+/// # async fn run() {
+/// use check_latest::crate_versions_async;
+///
+/// let versions = crate_versions_async!().await;
+/// # }
+/// ```
+///
+/// ## Overriding Default Values
+///
+/// *__NOTE__ Overriding both defaults is no different than just using
+/// `Versions::new`. You will probably want to override only one field, if any,
+/// if using this macro.
+///
+/// ```rust,no_run
+/// # async fn run() {
+/// use check_latest::crate_versions_async;
+///
+/// let versions = crate_versions_async!(
+///     crate_name = "renamed-crate",
+///     user_agent = "my-user-agent",
+/// ).await;
+/// # }
+/// ```
+#[macro_export]
+macro_rules! crate_versions_async {
+    (crate_name = $crate_name:expr, user_agent = $user_agent:expr $(,)?) => {
+        $crate::Versions::async_new($crate_name, $user_agent)
+    };
+    (user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
+        $crate::crate_versions_async!(
+            crate_name = $crate_name,
+            user_agent = $user_agent,
+        )
+    };
+    (crate_name = $crate_name:expr) => {
+        $crate::crate_versions_async!(
+            crate_name = $crate_name,
+            user_agent = $crate::user_agent!(),
+        )
+    };
+    (user_agent = $user_agent:expr) => {
+        $crate::crate_versions_async!(
+            crate_name = $crate::crate_name!(),
+            user_agent = $user_agent,
+        )
+    };
+    () => {
+        $crate::crate_versions_async!(
+            crate_name = $crate::crate_name!(),
+            user_agent = $crate::user_agent!(),
+        )
     };
 }
 
