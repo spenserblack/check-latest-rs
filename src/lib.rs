@@ -1,5 +1,34 @@
-//! Depending on the features you have enabled/disabled, you should view the
-//! documentation for `blocking` and/or `async` for basic usage.
+//! # Examples
+//! ## The Basics
+//!
+//! ```
+//! use check_latest::check_max;
+//!
+//! if let Ok(Some(version)) = check_max!() {
+//!     println!("Version {} is now available!", version);
+//! }
+//! ```
+//!
+//! ## Something Slightly More Complicated
+//!
+//! ```
+//! use check_latest::*;
+//!
+//! if let Ok(available_versions) = Versions::new(crate_name!(), user_agent!()) {
+//!     let current_version = crate_version!();
+//!     let is_yanked = available_versions
+//!         .versions()
+//!         .iter()
+//!         .filter(|version| version.yanked)
+//!         .any(|version| version == current_version);
+//!
+//!     if is_yanked {
+//!         println!("This version has been yanked.");
+//!     }
+//! } else {
+//!     eprintln!("We couldn't check for available versions.");
+//! }
+//! ```
 //!
 //! # Features
 //! ## `blocking`
@@ -12,7 +41,7 @@
 //!
 //! Allows you to asynchronously check for available versions.
 //! If enabled, it will provide async versions of the macros, which can be used
-//! with `<macro_name>_async!` For example, `max_version_async!`.
+//! with `<macro_name>_async!` For example, `check_max_async!`.
 //!
 //! ```toml
 //! [dependencies.check-latest]

@@ -9,12 +9,14 @@ Check if your rust executable is the latest available version on [Crates.io]
 # The Basics
 
 ```rust
-use check_latest::max_version;
+use check_latest::check_max;
 
-if let Ok(Some(version)) = max_version!() {
-    println!("We've released a new version: {}!", version);
+if let Ok(Some(version)) = check_max!() {
+    println!("Version {} is now available!", version);
 }
 ```
+
+*Please check [the documentation](https://docs.rs/check-latest/) For more usage.*
 
 # Features
 This crate has two features: `async` and `blocking`.
