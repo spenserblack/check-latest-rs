@@ -147,5 +147,127 @@ macro_rules! versions_async {
     };
 }
 
+/// Checks if there is a version available that is greater than the current
+/// version.
+///
+/// # Returns
+///
+/// Assume the current version is `a.b.c`, and we are looking at versions that
+/// are `x.y.z`.
+///
+/// - `Ok(Some(version))` if `x.y.z > a.b.c` where `version = max x.y.z`
+/// - `Ok(None)` if no version meets the rule `x.y.z > a.b.c`
+/// - `Err(e)` if comparison could not be made
+///
+/// # Example
+///
+/// ```rust,no_run
+/// # async fn run() {
+/// use check_latest::check_max_async;
+///
+/// if let Ok(Some(version)) = check_max_async!().await {
+///     println!("A new version is available: {}", version);
+/// }
+/// # }
+/// ```
+#[macro_export]
+macro_rules! check_max_async {
+    () => {
+        async {
+            $crate::crate_versions_async!()
+                .await
+                .map(|versions| {
+                    let max = versions.max_unyanked_version()?
+                        .clone();
+                    if max > $crate::crate_version!() {
+                        Some(max)
+                    } else {
+                        None
+                    }
+                })
+        }
+    };
+}
+/// Checks if there is a higher minor version available with the same major
+/// version
+///
+/// # Returns
+///
+/// Assume the current version is `a.b.c`, and we are looking at versions that
+/// are `a.y.z`.
+///
+/// - `Ok(Some(version))` if `a.y.z > a.b.c` where `version =  max a.b.z`
+/// - `Ok(None)` if no version meets the rule `a.y.z > a.b.c`
+/// - `Err(e)` if comparison could not be made
+///
+/// # Example
+///
+/// ```rust,no_run
+/// # async fn run() {
+/// use check_latest::check_minor_async;
+///
+/// if let Ok(Some(version)) = check_minor_async!().await {
+///     println!("A new version is available: {}", version);
+/// }
+/// # }
+/// ```
+#[macro_export]
+macro_rules! check_minor_async {
+    () => {
+        async {
+            $crate::crate_versions_async!()
+                .await
+                .and_then(|versions| {
+                    let major_version = $crate::crate_major_version!().parse()?;
+                    let max = versions.max_unyanked_minor_version(major_version);
+                    let max = max.cloned();
+                    let max = max.filter(|max| max > $crate::crate_version!());
+                    Ok(max)
+                })
+        }
+    };
+}
+
+/// Checks if there is a higher patch available, within the same major.minor
+/// version.
+///
+/// # Returns
+///
+/// Assume the current version is `a.b.c`, and we are looking at versions that
+/// are `a.b.z`.
+///
+/// - `Ok(Some(version))` if `a.b.z > a.b.c`, where `version = max a.b.z`
+/// - `Ok(None)` if no version meets the rule `a.b.z > a.b.c`
+/// - `Err(e)` if comparison could not be made
+///
+/// # Example
+///
+/// ```rust,no_run
+/// # async fn run() {
+/// use check_latest::check_patch_async;
+///
+/// if let Ok(Some(version)) = check_patch_async!().await {
+///     println!("We've implemented one or more bug fixes in {}", version);
+/// }
+/// # }
+/// ```
+#[macro_export]
+macro_rules! check_patch_async {
+    () => {
+        async {
+            $crate::crate_versions_async!()
+                .await
+                .and_then(|versions| {
+                    let major_version = $crate::crate_major_version!().parse()?;
+                    let minor_version = $crate::crate_minor_version!().parse()?;
+                    let max = versions.max_unyanked_patch(major_version, minor_version);
+                    let max = max.cloned();
+                    let max = max.filter(|max| max > $crate::crate_version!());
+                    Ok(max)
+                })
+        }
+    };
+}
+
 mod max;
 mod newest;
