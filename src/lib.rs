@@ -510,6 +510,12 @@ struct VersionListItem {
     yanked: bool,
 }
 
+#[cfg(not(feature = "async"))]
+#[cfg(not(feature = "blocking"))]
+compile_error!("\
+`check-latest` is almost completely useless without either `async` or \
+`blocking` enabled");
+
 #[cfg(test)]
 mod tests {
     use chrono::NaiveDateTime;
