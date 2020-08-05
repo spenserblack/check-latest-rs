@@ -466,19 +466,6 @@ macro_rules! user_agent {
     };
 }
 
-#[derive(Deserialize)]
-struct CratesioResponse {
-    #[serde(rename = "crate")]
-    all_versions: Vec<VersionListItem>,
-}
-
-#[derive(Deserialize)]
-struct VersionListItem {
-    #[serde(rename = "num")]
-    version: SemVer,
-    yanked: bool,
-}
-
 #[cfg(not(any(feature = "async", feature = "blocking")))]
 compile_error!("\
 `check-latest` is almost completely useless without either `async` or \

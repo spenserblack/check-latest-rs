@@ -11,31 +11,8 @@
 //! ```
 
 use anyhow::{Context, Result};
-use crate::{build_url, CratesioResponse, Versions};
-use semver::Version;
+use crate::{build_url, Versions};
 
-
-async fn get_version_list(crate_name: &str, user_agent: &str) -> Result<Vec<Version>> {
-    let url = build_url(crate_name);
-    let response: CratesioResponse = reqwest::Client::builder()
-        .user_agent(user_agent)
-        .build()
-        .context("Couldn't build client")?
-        .get(&url)
-        .send()
-        .await
-        .context("Couldn't request crate info")?
-        .json()
-        .await
-        .context("Couldn't read as JSON")?;
-    let versions = response.all_versions;
-    let versions = versions
-        .into_iter()
-        .filter(|v| !v.yanked)
-        .map(|v| v.version)
-        .collect();
-    Ok(versions)
-}
 
 /// Checks if there is a version available that is greater than the current
 /// version.
