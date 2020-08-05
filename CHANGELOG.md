@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased](https://github.com/spenserblack/check-latest-rs/compare/v0.4.0...master)
+## [Unreleased](https://github.com/spenserblack/check-latest-rs/compare/v0.4.0...HEAD)
 ### Fixed
 - Compilation succeeding when crate rendered useless by all features being disabled
 
