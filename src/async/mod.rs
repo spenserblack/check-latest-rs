@@ -4,7 +4,7 @@
 //! # async fn run() {
 //! use check_latest::*;
 //!
-//! if let Ok(Some(version)) = max_version_async!().await {
+//! if let Ok(Some(version)) = check_max_async!().await {
 //!     println!("We've released a new version: {}!", version);
 //! }
 //! # }

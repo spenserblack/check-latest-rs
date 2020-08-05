@@ -3,7 +3,7 @@
 //! ```rust,no_run
 //! use check_latest::*;
 //!
-//! if let Ok(Some(version)) = max_version!() {
+//! if let Ok(Some(version)) = check_max!() {
 //!     println!("We've released a new version: {}!", version);
 //! }
 //! ```
