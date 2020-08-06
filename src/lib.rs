@@ -1,7 +1,7 @@
 //! # Examples
 //! ## The Basics
 //!
-//! ```
+//! ```rust,no_run
 //! use check_latest::check_max;
 //!
 //! if let Ok(Some(version)) = check_max!() {
@@ -11,7 +11,7 @@
 //!
 //! ## Something Slightly More Complicated
 //!
-//! ```
+//! ```rust,no_run
 //! use check_latest::*;
 //!
 //! if let Ok(available_versions) = Versions::new(crate_name!(), user_agent!()) {
