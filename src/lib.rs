@@ -466,50 +466,6 @@ macro_rules! user_agent {
     };
 }
 
-#[derive(Deserialize)]
-struct CratesioResponse {
-    #[serde(rename = "crate")]
-    versions: MaxAndNew,
-    all_versions: Vec<VersionListItem>,
-}
-
-#[derive(Deserialize)]
-#[deprecated(since = "0.4")]
-/// Maintains compatibility with deprecated `fn`s.
-pub struct MaxAndNew {
-    /// The max version according to the [Crates.io] API
-    ///
-    /// ```json
-    /// {
-    ///   "crate": {
-    ///     "max_version": "<version>"
-    ///   }
-    /// }
-    /// ```
-    ///
-    /// [Crates.io]: https://crates.io/
-    pub max_version: SemVer,
-    /// The newest version according to the [Crates.io] API
-    ///
-    /// ```json
-    /// {
-    ///   "crate": {
-    ///     "newest_version": "<version>"
-    ///   }
-    /// }
-    /// ```
-    ///
-    /// [Crates.io]: https://crates.io/
-    pub newest_version: SemVer,
-}
-
-#[derive(Deserialize)]
-struct VersionListItem {
-    #[serde(rename = "num")]
-    version: SemVer,
-    yanked: bool,
-}
-
 #[cfg(not(any(feature = "async", feature = "blocking")))]
 compile_error!("\
 `check-latest` is almost completely useless without either `async` or \
