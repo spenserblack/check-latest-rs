@@ -1,8 +1,7 @@
 # Changelog
 
-## [Unreleased](https://github.com/spenserblack/check-latest-rs/compare/v0.4.1...HEAD)
-### Removed
-- Deprecated code
+Please view the [releases page](https://github.com/spenserblack/check-latest-rs/releases)
+for further release notes.
 
 ## [0.4.1]
 ### Fixed
