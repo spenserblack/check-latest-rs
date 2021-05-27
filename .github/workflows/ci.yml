@@ -25,3 +25,9 @@ jobs:
     - run: cargo test --verbose --all-features
     # NOTE Not testing with only async enabled, due to doc tests that require blocking
     - run: cargo build --verbose --no-default-features --features async
+  build-examples:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - run: cargo build --example basic-usage
+      - run: cargo build --example async --no-default-features --features async
