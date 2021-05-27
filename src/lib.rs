@@ -467,15 +467,17 @@ macro_rules! user_agent {
 }
 
 #[cfg(not(any(feature = "async", feature = "blocking")))]
-compile_error!("\
+compile_error!(
+    "\
 `check-latest` is almost completely useless without either `async` or \
-`blocking` enabled");
+`blocking` enabled"
+);
 
 #[cfg(test)]
 mod tests {
+    use super::*;
     use chrono::NaiveDateTime;
     use lazy_static::lazy_static;
-    use super::*;
 
     lazy_static! {
         static ref DONT_CARE_DATETIME: DateTime<Utc> = {

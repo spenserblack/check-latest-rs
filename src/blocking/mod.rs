@@ -8,8 +8,8 @@
 //! }
 //! ```
 
-use anyhow::{Context, Result};
 use crate::{build_url, Versions};
+use anyhow::{Context, Result};
 
 /// Checks if there is a version available that is greater than the current
 /// version.
@@ -35,16 +35,14 @@ use crate::{build_url, Versions};
 #[macro_export]
 macro_rules! check_max {
     () => {
-        $crate::new_versions!()
-            .map(|versions| {
-                let max = versions.max_unyanked_version()?
-                    .clone();
-                if max > $crate::crate_version!() {
-                    Some(max)
-                } else {
-                    None
-                }
-            })
+        $crate::new_versions!().map(|versions| {
+            let max = versions.max_unyanked_version()?.clone();
+            if max > $crate::crate_version!() {
+                Some(max)
+            } else {
+                None
+            }
+        })
     };
 }
 /// Checks if there is a higher minor version available with the same major
@@ -71,14 +69,13 @@ macro_rules! check_max {
 #[macro_export]
 macro_rules! check_minor {
     () => {
-        $crate::new_versions!()
-            .and_then(|versions| {
-                let major_version = $crate::crate_major_version!().parse()?;
-                let max = versions.max_unyanked_minor_version(major_version);
-                let max = max.cloned();
-                let max = max.filter(|max| max > $crate::crate_version!());
-                Ok(max)
-            })
+        $crate::new_versions!().and_then(|versions| {
+            let major_version = $crate::crate_major_version!().parse()?;
+            let max = versions.max_unyanked_minor_version(major_version);
+            let max = max.cloned();
+            let max = max.filter(|max| max > $crate::crate_version!());
+            Ok(max)
+        })
     };
 }
 
@@ -106,15 +103,14 @@ macro_rules! check_minor {
 #[macro_export]
 macro_rules! check_patch {
     () => {
-        $crate::new_versions!()
-            .and_then(|versions| {
-                let major_version = $crate::crate_major_version!().parse()?;
-                let minor_version = $crate::crate_minor_version!().parse()?;
-                let max = versions.max_unyanked_patch(major_version, minor_version);
-                let max = max.cloned();
-                let max = max.filter(|max| max > $crate::crate_version!());
-                Ok(max)
-            })
+        $crate::new_versions!().and_then(|versions| {
+            let major_version = $crate::crate_major_version!().parse()?;
+            let minor_version = $crate::crate_minor_version!().parse()?;
+            let max = versions.max_unyanked_patch(major_version, minor_version);
+            let max = max.cloned();
+            let max = max.filter(|max| max > $crate::crate_version!());
+            Ok(max)
+        })
     };
 }
 
@@ -204,22 +200,13 @@ macro_rules! new_versions {
         $crate::Versions::new($crate_name, $user_agent)
     };
     (user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::new_versions!(
-            crate_name = $crate_name,
-            user_agent = $user_agent,
-        )
+        $crate::new_versions!(crate_name = $crate_name, user_agent = $user_agent,)
     };
     (crate_name = $crate_name:expr) => {
-        $crate::new_versions!(
-            crate_name = $crate_name,
-            user_agent = $crate::user_agent!(),
-        )
+        $crate::new_versions!(crate_name = $crate_name, user_agent = $crate::user_agent!(),)
     };
     (user_agent = $user_agent:expr) => {
-        $crate::new_versions!(
-            crate_name = $crate::crate_name!(),
-            user_agent = $user_agent,
-        )
+        $crate::new_versions!(crate_name = $crate::crate_name!(), user_agent = $user_agent,)
     };
     () => {
         $crate::new_versions!(

@@ -10,9 +10,8 @@
 //! # }
 //! ```
 
-use anyhow::{Context, Result};
 use crate::{build_url, Versions};
-
+use anyhow::{Context, Result};
 
 /// Checks if there is a version available that is greater than the current
 /// version.
@@ -41,17 +40,14 @@ use crate::{build_url, Versions};
 macro_rules! check_max_async {
     () => {
         async {
-            $crate::new_versions_async!()
-                .await
-                .map(|versions| {
-                    let max = versions.max_unyanked_version()?
-                        .clone();
-                    if max > $crate::crate_version!() {
-                        Some(max)
-                    } else {
-                        None
-                    }
-                })
+            $crate::new_versions_async!().await.map(|versions| {
+                let max = versions.max_unyanked_version()?.clone();
+                if max > $crate::crate_version!() {
+                    Some(max)
+                } else {
+                    None
+                }
+            })
         }
     };
 }
@@ -82,15 +78,13 @@ macro_rules! check_max_async {
 macro_rules! check_minor_async {
     () => {
         async {
-            $crate::new_versions_async!()
-                .await
-                .and_then(|versions| {
-                    let major_version = $crate::crate_major_version!().parse()?;
-                    let max = versions.max_unyanked_minor_version(major_version);
-                    let max = max.cloned();
-                    let max = max.filter(|max| max > $crate::crate_version!());
-                    Ok(max)
-                })
+            $crate::new_versions_async!().await.and_then(|versions| {
+                let major_version = $crate::crate_major_version!().parse()?;
+                let max = versions.max_unyanked_minor_version(major_version);
+                let max = max.cloned();
+                let max = max.filter(|max| max > $crate::crate_version!());
+                Ok(max)
+            })
         }
     };
 }
@@ -122,16 +116,14 @@ macro_rules! check_minor_async {
 macro_rules! check_patch_async {
     () => {
         async {
-            $crate::new_versions_async!()
-                .await
-                .and_then(|versions| {
-                    let major_version = $crate::crate_major_version!().parse()?;
-                    let minor_version = $crate::crate_minor_version!().parse()?;
-                    let max = versions.max_unyanked_patch(major_version, minor_version);
-                    let max = max.cloned();
-                    let max = max.filter(|max| max > $crate::crate_version!());
-                    Ok(max)
-                })
+            $crate::new_versions_async!().await.and_then(|versions| {
+                let major_version = $crate::crate_major_version!().parse()?;
+                let minor_version = $crate::crate_minor_version!().parse()?;
+                let max = versions.max_unyanked_patch(major_version, minor_version);
+                let max = max.cloned();
+                let max = max.filter(|max| max > $crate::crate_version!());
+                Ok(max)
+            })
         }
     };
 }
@@ -230,22 +222,13 @@ macro_rules! new_versions_async {
         $crate::Versions::async_new($crate_name, $user_agent)
     };
     (user_agent = $user_agent:expr, crate_name = $crate_name:expr $(,)?) => {
-        $crate::new_versions_async!(
-            crate_name = $crate_name,
-            user_agent = $user_agent,
-        )
+        $crate::new_versions_async!(crate_name = $crate_name, user_agent = $user_agent,)
     };
     (crate_name = $crate_name:expr) => {
-        $crate::new_versions_async!(
-            crate_name = $crate_name,
-            user_agent = $crate::user_agent!(),
-        )
+        $crate::new_versions_async!(crate_name = $crate_name, user_agent = $crate::user_agent!(),)
     };
     (user_agent = $user_agent:expr) => {
-        $crate::new_versions_async!(
-            crate_name = $crate::crate_name!(),
-            user_agent = $user_agent,
-        )
+        $crate::new_versions_async!(crate_name = $crate::crate_name!(), user_agent = $user_agent,)
     };
     () => {
         $crate::new_versions_async!(
