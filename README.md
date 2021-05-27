@@ -3,6 +3,7 @@
 [![Docs.rs](https://docs.rs/check-latest/badge.svg)](https://docs.rs/check-latest/)
 ![Crates.io](https://img.shields.io/crates/d/check-latest)
 [![Build Status](https://travis-ci.com/spenserblack/check-latest-rs.svg?branch=master)](https://travis-ci.com/spenserblack/check-latest-rs)
+[![CI](https://github.com/spenserblack/check-latest-rs/actions/workflows/ci.yml/badge.svg)](https://github.com/spenserblack/check-latest-rs/actions/workflows/ci.yml)
 
 Check if your rust executable is the latest available version on [Crates.io]
 
