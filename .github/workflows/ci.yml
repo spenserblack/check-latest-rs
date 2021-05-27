@@ -22,6 +22,6 @@ jobs:
     - run: cargo build --verbose
     - run: cargo test --verbose
     - run: cargo build --verbose --all-features
-    - run: cargo test --verbose --all-feautes
+    - run: cargo test --verbose --all-features
     # NOTE Not testing with only async enabled, due to doc tests that require blocking
     - run: cargo build --verbose --no-default-features --features async
