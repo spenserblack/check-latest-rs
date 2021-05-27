@@ -6,7 +6,7 @@
 
 Check if your rust executable is the latest available version on [Crates.io]
 
-# The Basics
+## The Basics
 
 ```rust
 use check_latest::check_max;
@@ -18,7 +18,8 @@ if let Ok(Some(version)) = check_max!() {
 
 *Please check the examples and [the documentation](https://docs.rs/check-latest/) For more usage.*
 
-# Features
+## Features
+
 This crate has two features: `async` and `blocking`.
 By default, `blocking` is enabled and `async` is disabled. This default is compatible with the
 example in the section titled **The Basics**. If you want to use asynchronous requests, you can
@@ -32,9 +33,9 @@ features = ["async"]
 *__NOTE__ There's nothing stopping you from enabling both `async` and `blocking`, but that's
 unlikely to be necessary.*
 
-# Notes
+## Notes
 
-## Making this Library Optional
+### Making this Library Optional
 
 If you use this library for your binary, you should probably make this an optional feature.
 Simply checking for the latest version on [Crates.io] brings over *a lot* of dependencies
