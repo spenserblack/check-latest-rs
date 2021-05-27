@@ -21,3 +21,7 @@ jobs:
     - uses: actions/checkout@v2
     - run: cargo build --verbose
     - run: cargo test --verbose
+    - run: cargo build --verbose --all-features
+    - run: cargo test --verbose --all-feautes
+    # NOTE Not testing with only async enabled, due to doc tests that require blocking
+    - run: cargo build --verbose --no-default-features --features async
