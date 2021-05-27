@@ -9,7 +9,7 @@ readme = "README.md"
 keywords = ["version", "latest"]
 categories = []
 repository = "https://github.com/spenserblack/check-latest-rs"
-exclude = [".github/*", ".gitignore", ".editorconfig", ".travis.yml", "CHANGELOG.md"]
+exclude = [".github/*", ".gitignore", ".editorconfig", "CHANGELOG.md"]
 
 [package.metadata.docs.rs]
 all-features = true
