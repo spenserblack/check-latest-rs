@@ -39,9 +39,3 @@ required-features = ["blocking"]
 name = "async"
 path = "examples/async.rs"
 required-features = ["async"]
-
-[badges]
-travis-ci = { repository = "spenserblack/check-latest-rs" }
-is-it-maintained-issue-resolution = { repository = "spenserblack/check-latest-rs" }
-is-it-maintained-open-issues = { repository = "spenserblack/check-latest-rs" }
-maintenance = { status = "passively-maintained" }
