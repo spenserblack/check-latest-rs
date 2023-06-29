@@ -3,9 +3,12 @@
     "image": "mcr.microsoft.com/devcontainers/rust:1",
     "customizations": {
         "vscode": {
-            "extensions": ["EditorConfig.EditorConfig"],
+            "extensions": ["EditorConfig.EditorConfig"]
         }
     },
+    // NOTE Because builds can take a long time, this starts the build so that
+    //      when the contributor has finished editing most or all of the
+    //      dependencies should be downloaded and built.
     "postCreateCommand": "cargo build",
     "remoteUser": "vscode"
 }
