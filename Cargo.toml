@@ -10,6 +10,7 @@ keywords = ["version", "latest"]
 categories = []
 repository = "https://github.com/spenserblack/check-latest-rs"
 exclude = [".github/*", ".gitignore", ".editorconfig", "CHANGELOG.md"]
+rust-version = "1.60.0"
 
 [package.metadata.docs.rs]
 all-features = true
